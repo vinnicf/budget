@@ -33,7 +33,7 @@ class Composition(models.Model):
 class CompositionInsumo(models.Model):
     insumo = models.ForeignKey(Insumo, on_delete=models.CASCADE)
     composition = models.ForeignKey(Composition, on_delete=models.CASCADE)
-    quantity = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.DecimalField(max_digits=25, decimal_places=10, null=True)
 
     def __str__(self):
         return f"{self.insumo.name} in {self.composition.name}"
@@ -44,7 +44,7 @@ class CompositionComposition(models.Model):
         Composition, on_delete=models.CASCADE, related_name='parent_composition_set')
     child_composition = models.ForeignKey(
         Composition, on_delete=models.CASCADE, related_name='child_composition_set')
-    quantity = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.DecimalField(max_digits=25, decimal_places=10, null=True)
 
     def __str__(self):
         return f"{self.child_composition.name} in {self.parent_composition.name}"

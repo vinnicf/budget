@@ -31,6 +31,7 @@ class InsumoAdmin(admin.ModelAdmin):
 class CompositionAdmin(admin.ModelAdmin):
     list_display = ['codigo', 'name', 'unit']
     inlines = [CompositionInsumoInline, CompositionCompositionInline]
+    search_fields = ['codigo']
 
 
 @admin.register(CompositionInsumo)

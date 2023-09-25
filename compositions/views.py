@@ -1,3 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from .models import Composition
 
-# Create your views here.
+def composition_detail(request, codigo):
+    composition = get_object_or_404(Composition, codigo=codigo)
+    return render(request, 'compositions/composition_detail.html', {'composition': composition})

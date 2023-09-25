@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Composition Details</title>
+</head>
+
+<body>
+    <h1>{{ composition.name }}</h1>
+    <p>Codigo: {{ composition.codigo }}</p>
+    <p>Unit: {{ composition.unit }}</p>
+
+    <h2>Insumos</h2>
+    <ul>
+        {% for comp_insumo in composition.compositioninsumo_set.all %}
+        <li>{{ comp_insumo.insumo.name }} ({{ comp_insumo.insumo.codigo }}) - Quantity: {{ comp_insumo.quantity }}</li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>
