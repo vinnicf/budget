@@ -1,23 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Composition Details</title>
-</head>
+{% block content %}
+<div class="container mt-5">
+    <h2>Composition Details</h2>
+    <hr>
 
-<body>
-    <h1>{{ composition.name }}</h1>
-    <p>Codigo: {{ composition.codigo }}</p>
+    <h4>{{ composition.name }} ({{ composition.codigo }})</h4>
     <p>Unit: {{ composition.unit }}</p>
 
-    <h2>Insumos</h2>
-    <ul>
-        {% for comp_insumo in composition.compositioninsumo_set.all %}
-        <li>{{ comp_insumo.insumo.name }} ({{ comp_insumo.insumo.codigo }}) - Quantity: {{ comp_insumo.quantity }}</li>
-        {% endfor %}
-    </ul>
-</body>
-
-</html>
+    <h5>Insumos:</h5>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Codigo</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">Unidade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for comp_insumo in composition.compositioninsumo_set.all %}
+            <tr>
+                <td>{{ comp_insumo.insumo.name }}</td>
+                <td>{{ comp_insumo.insumo.codigo }}</td>
+                <td>{{ comp_insumo.quantity }}</td>
+                <td>{{ comp_insumo.insumo.unit }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
