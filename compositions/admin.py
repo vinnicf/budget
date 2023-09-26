@@ -24,7 +24,7 @@ class StateAdmin(admin.ModelAdmin):
 
 @admin.register(Insumo)
 class InsumoAdmin(admin.ModelAdmin):
-    list_display = ['codigo', 'name', 'unit']
+    list_display = ['codigo', 'name', 'unit','currentcost']
 
 
 @admin.register(Composition)

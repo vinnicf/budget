@@ -12,6 +12,7 @@ class Insumo(models.Model):
     codigo = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=200)
     unit = models.CharField(max_length=50)
+    currentcost = models.DecimalField(max_digits=10, decimal_places=2, default=0.00) # Decimal field for cost
 
     def __str__(self):
         return self.name
@@ -24,7 +25,22 @@ class Composition(models.Model):
     # Here we have a ManyToMany relationship with a through model to capture quantity
     insumos = models.ManyToManyField(Insumo, through='CompositionInsumo')
     compositions = models.ManyToManyField(
-        'self', symmetrical=False, through='CompositionComposition', related_name='child_compositions')
+        'self', symmetrical=False, through='CompositionComposition', related_name='parent_compositions')
+
+
+
+    def calculate_cost(self):
+        total_cost = 0
+        for comp_insumo in self.compositioninsumo_set.all():
+            total_cost += comp_insumo.insumo.currentcost * comp_insumo.quantity
+
+        for comp_comp in self.compositionchild_set.all():
+            total_cost += comp_comp.child_composition.calculate_cost() * comp_comp.quantity
+
+        return total_cost
+
+    def total_cost(self):
+        return self.calculate_cost()
 
     def __str__(self):
         return self.name
@@ -41,9 +57,9 @@ class CompositionInsumo(models.Model):
 
 class CompositionComposition(models.Model):
     parent_composition = models.ForeignKey(
-        Composition, on_delete=models.CASCADE, related_name='parent_composition_set')
+        Composition, on_delete=models.CASCADE, related_name='compositionchild_set')
     child_composition = models.ForeignKey(
-        Composition, on_delete=models.CASCADE, related_name='child_composition_set')
+        Composition, on_delete=models.CASCADE, related_name='compositionparent_set')
     quantity = models.DecimalField(max_digits=25, decimal_places=10, null=True)
 
     def __str__(self):

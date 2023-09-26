@@ -7,8 +7,9 @@
 
     <h4>{{ composition.name }} ({{ composition.codigo }})</h4>
     <p>Unit: {{ composition.unit }}</p>
+    <p>Custo total: {{ composition.total_cost }}</p>
 
-    <h5>Insumos:</h5>
+    <h5>Insumos e Composições:</h5>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -16,6 +17,7 @@
                 <th scope="col">Codigo</th>
                 <th scope="col">Quantidade</th>
                 <th scope="col">Unidade</th>
+                <th scope="col">Valor Unitário</th>
             </tr>
         </thead>
         <tbody>
@@ -25,9 +27,21 @@
                 <td>{{ comp_insumo.insumo.codigo }}</td>
                 <td>{{ comp_insumo.quantity }}</td>
                 <td>{{ comp_insumo.insumo.unit }}</td>
+                <td>{{ comp_insumo.insumo.currentcost }}</td>
+            </tr>
+            {% endfor %}
+
+            {% for comp_comp in composition.compositionchild_set.all %}
+            <tr>
+                <td>{{ comp_comp.child_composition.name }}</td>
+                <td>{{ comp_comp.child_composition.codigo }}</td>
+                <td>{{ comp_comp.quantity }}</td>
+                <td>{{ comp_comp.child_composition.unit }}</td>
+                <td>{{ comp_comp.child_composition.total_cost }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
 </div>
 {% endblock %}
