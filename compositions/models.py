@@ -20,8 +20,9 @@ class Insumo(models.Model):
 
 class Composition(models.Model):
     codigo = models.CharField(max_length=10, unique=True)
-    name = models.CharField(max_length=200)
-    unit = models.CharField(max_length=50)
+    name = models.CharField(max_length=400)
+    unit = models.CharField(max_length=10)
+    comp_cost = models.DecimalField(max_digits=25, decimal_places=2, default=0.00, editable=False)
     # Here we have a ManyToMany relationship with a through model to capture quantity
     insumos = models.ManyToManyField(Insumo, through='CompositionInsumo')
     compositions = models.ManyToManyField(
@@ -44,6 +45,10 @@ class Composition(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.comp_cost = self.calculate_cost()
+        super().save(*args, **kwargs)
 
 
 class CompositionInsumo(models.Model):

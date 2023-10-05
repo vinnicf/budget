@@ -9,7 +9,8 @@
                 <th>Codigo</th>
                 <th>Name</th>
                 <th>Unit</th>
-                <th>Custo</th>
+                <th>Tamanho</th>
+                <th>Link</th>
             </tr>
         </thead>
         <tbody>
@@ -18,6 +19,7 @@
                 <td>{{ composition.codigo }}</td>
                 <td>{{ composition.name }}</td>
                 <td>{{ composition.unit }}</td>
+                <td>{{ composition.total_children }}</td>
 
                 <td>
                     <a href="{% url 'compositions:composition_detail' composition.codigo %}">View Details</a>

@@ -29,7 +29,7 @@ class InsumoAdmin(admin.ModelAdmin):
 
 @admin.register(Composition)
 class CompositionAdmin(admin.ModelAdmin):
-    list_display = ['codigo', 'name', 'unit']
+    list_display = ['codigo', 'name', 'unit', 'comp_cost']
     inlines = [CompositionInsumoInline, CompositionCompositionInline]
     search_fields = ['codigo']
 

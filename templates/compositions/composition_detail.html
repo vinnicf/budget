@@ -1,45 +1,54 @@
 {% extends 'base.html' %}
-
+{% block title %} {{ composition.name }} ({{ composition.codigo }})
+{% endblock %}
 {% block content %}
 <div class="container mt-5">
-    <h2>Composition Details</h2>
+    <h3>Detalhes da Composição</h3>
     <hr>
 
     <h4>{{ composition.name }} ({{ composition.codigo }})</h4>
-    <p>Unit: {{ composition.unit }}</p>
-    <p>Custo total: {{ composition.total_cost }}</p>
+    <p>Unidade: {{ composition.unit }}</p>
+    <p>Custo total da Composição: R${{ composition.total_cost|floatformat:2 }}</p>
 
     <h5>Insumos e Composições:</h5>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Codigo</th>
+                <th scope="col">Tipo</th> <!-- New Column for Type -->
+                <th scope="col">Código</th>
+                <th scope="col">Nome</th>
                 <th scope="col">Quantidade</th>
                 <th scope="col">Unidade</th>
-                <th scope="col">Valor Unitário</th>
+                <th scope="col">Custo Unitário</th>
+                <th scope="col">Custo na Composição</th>
             </tr>
         </thead>
         <tbody>
-            {% for comp_insumo in composition.compositioninsumo_set.all %}
-            <tr>
-                <td>{{ comp_insumo.insumo.name }}</td>
-                <td>{{ comp_insumo.insumo.codigo }}</td>
-                <td>{{ comp_insumo.quantity }}</td>
-                <td>{{ comp_insumo.insumo.unit }}</td>
-                <td>{{ comp_insumo.insumo.currentcost }}</td>
-            </tr>
-            {% endfor %}
 
             {% for comp_comp in composition.compositionchild_set.all %}
             <tr>
-                <td>{{ comp_comp.child_composition.name }}</td>
-                <td>{{ comp_comp.child_composition.codigo }}</td>
-                <td>{{ comp_comp.quantity }}</td>
+                <td>C</td> <!-- New Cell for Composition -->
+                <td><a href="{% url 'compositions:composition_detail' comp_comp.child_composition.codigo %}">{{ comp_comp.child_composition.codigo }}</a></td>
+                <td><a href="{% url 'compositions:composition_detail' comp_comp.child_composition.codigo %}">{{ comp_comp.child_composition.name }}</a></td>
+                <td>{{ comp_comp.quantity|floatformat:3 }}</td>
                 <td>{{ comp_comp.child_composition.unit }}</td>
-                <td>{{ comp_comp.child_composition.total_cost }}</td>
+                <td>{{ comp_comp.child_composition.total_cost|floatformat:2 }}</td>
+                <td>-</td>
             </tr>
             {% endfor %}
+
+            {% for comp_insumo in composition.compositioninsumo_set.all %}
+            <tr>
+                <td>I</td> <!-- New Cell for Insumo -->
+                <td>{{ comp_insumo.insumo.codigo }}</td>
+                <td>{{ comp_insumo.insumo.name }}</td>
+                <td>{{ comp_insumo.quantity|floatformat:3 }}</td>
+                <td>{{ comp_insumo.insumo.unit }}</td>
+                <td>{{ comp_insumo.insumo.currentcost|floatformat:2 }}</td>
+                <td>-</td>
+            </tr>
+            {% endfor %}
+
         </tbody>
     </table>
 
