@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Composition
-from rest_framework import viewsets
+from .models import Composition, CostHistory
+from rest_framework import viewsets, status
 from .serializers import CompositionSerializer, CompositionDetailSerializer
-from django.db.models import Q, Count, F, ExpressionWrapper, fields
+from django.db.models import Q, Count, F, ExpressionWrapper, fields, Prefetch
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -58,6 +58,10 @@ class SearchCompositionView(APIView):
         return Response(serializer.data)
 
 
+
+
+
+
 class CompositionDetailView(APIView):
 
     queryset = Composition.objects.all()
@@ -70,3 +74,4 @@ class CompositionDetailView(APIView):
                 return Response(serializer.data)
         else:
                 return Response({"error": "Composition not found"}, status=404)
+

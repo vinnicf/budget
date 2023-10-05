@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Composition, CompositionComposition, CompositionInsumo
+from .models import Composition, CompositionComposition, CompositionInsumo, CostHistory
 
 class CompositionInsumoSerializer(serializers.ModelSerializer):
     insumo_name = serializers.StringRelatedField(source='insumo.name')
@@ -39,3 +39,12 @@ class CompositionDetailSerializer(serializers.ModelSerializer):
         model = Composition
         fields = ('id', 'codigo', 'name', 'unit', 'comp_cost', 'compositioninsumo_set', 'compositionchild_set')
         depth = 1
+
+
+class CostHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CostHistory
+        fields = '__all__'
+
+
+
