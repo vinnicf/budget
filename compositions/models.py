@@ -41,19 +41,35 @@ class Composition(models.Model):
         'self', symmetrical=False, through='CompositionComposition', related_name='parent_compositions')
 
 
-
-    def calculate_cost(self):
+    def calculate_cost(self, state=None, desonerado=None):
         total_cost = 0
+        print("In Calculate Cost")
+        # Calculate cost for insumos in this composition
         for comp_insumo in self.compositioninsumo_set.all():
-            total_cost += comp_insumo.insumo.currentcost * comp_insumo.quantity
+            print(f"Checking insumo: {comp_insumo.insumo.codigo}")
+            cost_history = CostHistory.objects.filter(
+                insumo=comp_insumo.insumo,
+                state=state,
+                cost_type=desonerado
+            ).last()
 
+            if cost_history:
+                print(f"Cost history found: {cost_history.cost}")
+                total_cost += cost_history.cost * comp_insumo.quantity
+
+            else:
+                print(f"No cost history found for insumo: {comp_insumo.insumo.codigo}")
+            
+            print(f"Quantity for insumo {comp_insumo.insumo.codigo}: {comp_insumo.quantity}")
+        # Calculate cost for child compositions
         for comp_comp in self.compositionchild_set.all():
-            total_cost += comp_comp.child_composition.calculate_cost() * comp_comp.quantity
+            child_composition_cost = comp_comp.child_composition.calculate_cost(state, desonerado)
+            total_cost += child_composition_cost * comp_comp.quantity
 
         return total_cost
 
-    def total_cost(self):
-        return self.calculate_cost()
+    def total_cost(self, state=None, desonerado=None):
+        return self.calculate_cost(state, desonerado)
 
     def __str__(self):
         return self.name
