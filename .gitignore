@@ -116,4 +116,8 @@ env.bak/
 *.swo
 *.swn
 
+*/migrations/*
+!*/migrations/__init__.py
+
+
 # End of .gitignore

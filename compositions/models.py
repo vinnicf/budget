@@ -1,5 +1,5 @@
 from django.db import models
-
+from calendar import monthrange
 
 class State(models.Model):
     name = models.CharField(max_length=100)
@@ -9,14 +9,26 @@ class State(models.Model):
 
 
 class Insumo(models.Model):
+    MATERIAL = 'MATERIAL'
+    MO = 'MO'
+
+    TYPE_CHOICES = [
+        (MATERIAL, 'Material'),
+        (MO, 'Mão de Obra'),
+    ]
+
     codigo = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=200)
     unit = models.CharField(max_length=50)
-    currentcost = models.DecimalField(max_digits=10, decimal_places=2, default=0.00) # Decimal field for cost
+    currentcost = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    insumo_type = models.CharField(
+        max_length=10,
+        choices=TYPE_CHOICES,
+        default=MATERIAL,
+    )
 
     def __str__(self):
         return self.name
-
 
 class Composition(models.Model):
     codigo = models.CharField(max_length=10, unique=True)
@@ -72,16 +84,33 @@ class CompositionComposition(models.Model):
 
 
 class CostHistory(models.Model):
+    DESONERADO = 'desonerado'
+    NAO_DESONERADO = 'nao_desonerado'
+    COST_TYPE_CHOICES = [
+        (DESONERADO, 'Desonerado'),
+        (NAO_DESONERADO, 'Não Desonerado'),
+    ]
+    
     insumo = models.ForeignKey(Insumo, on_delete=models.CASCADE)
     state = models.ForeignKey(State, on_delete=models.CASCADE)
     month_year = models.DateField()
     cost = models.DecimalField(max_digits=10, decimal_places=2)
+    cost_type = models.CharField(
+        max_length=15, 
+        choices=COST_TYPE_CHOICES,
+        default=NAO_DESONERADO
+    )
 
     class Meta:
-        unique_together = ["insumo", "state", "month_year"]
+        unique_together = ["insumo", "state", "month_year", "cost_type"]
         indexes = [
-            models.Index(fields=["insumo", "state", "month_year"]),
+            models.Index(fields=["insumo", "state", "month_year", "cost_type"]),
         ]
 
     def __str__(self):
-        return f"{self.insumo.name} cost in {self.state.name} for {self.month_year.strftime('%B %Y')}"
+        return f"{self.insumo.name} ({self.get_cost_type_display()}) cost in {self.state.name} for {self.month_year.strftime('%B %Y')}"
+
+    def save(self, *args, **kwargs):
+        last_day_of_month = monthrange(self.month_year.year, self.month_year.month)[1]
+        self.month_year = self.month_year.replace(day=last_day_of_month)
+        super().save(*args, **kwargs)
