@@ -34,11 +34,17 @@ class CompositionSerializer(serializers.ModelSerializer):
 class CompositionDetailSerializer(serializers.ModelSerializer):
     compositioninsumo_set = CompositionInsumoSerializer(many=True, read_only=True)
     compositionchild_set = CompositionCompositionSerializer(many=True, read_only=True)
+    total_cost = serializers.SerializerMethodField()
     
     class Meta:
         model = Composition
-        fields = ('id', 'codigo', 'name', 'unit', 'comp_cost', 'compositioninsumo_set', 'compositionchild_set')
+        fields = ('id', 'codigo', 'name', 'unit', 'comp_cost', 'compositioninsumo_set', 'compositionchild_set', 'total_cost')
         depth = 1
+
+    def get_total_cost(self, obj):
+        state = self.context.get('state', None)
+        desonerado = self.context.get('desonerado', None)
+        return obj.calculate_cost(state=state, desonerado=desonerado)
 
 
 class CostHistorySerializer(serializers.ModelSerializer):

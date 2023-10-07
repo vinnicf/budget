@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %} {{ insumo.name }} ({{ insumo.codigo }})
+{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h3>Detalhes do Insumo</h3>
+    <hr>
+    <h2>{{ insumo.name }}</h2>
+    <h3>((Código: {{ insumo.codigo }}))</h3>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Estado</th>
+                <th>Custo Desonerado</th>
+                <th>Custo Não Desonerado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for state_cost in state_costs %}
+            <tr>
+                <td>{{ state_cost.state.name }}</td>
+                <td>
+                    {% if state_cost.latest_desonerado_cost %}
+                        {{ state_cost.latest_desonerado_cost.cost }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+                <td>
+                    {% if state_cost.latest_nao_desonerado_cost %}
+                        {{ state_cost.latest_nao_desonerado_cost.cost }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h4>Composições Que Utilizam Este Insumo</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Codigo</th>
+            <th>Descrição</th>
+            <th>Coeficiente do Insumo na Composição</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for comp_insumo in related_compositions %}
+        <tr>
+            <td>{{ comp_insumo.composition.codigo }}</td>
+            <td>{{ comp_insumo.composition.name }}</td>
+            <td>{{ comp_insumo.quantity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</div>
+{% endblock %}

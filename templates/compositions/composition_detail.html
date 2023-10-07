@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load math_filters %}
+
 {% block title %} {{ composition.name }} ({{ composition.codigo }})
 {% endblock %}
 {% block content %}
@@ -8,48 +10,54 @@
 
     <h4>{{ composition.name }} ({{ composition.codigo }})</h4>
     <p>Unidade: {{ composition.unit }}</p>
-    <p>Custo total da Composição: R${{ composition.total_cost|floatformat:2 }}</p>
+    <p>Custo total da Composição: R${{ desonerado_cost }}</p>
 
     <h5>Insumos e Composições:</h5>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th scope="col">Tipo</th> <!-- New Column for Type -->
-                <th scope="col">Código</th>
-                <th scope="col">Nome</th>
-                <th scope="col">Quantidade</th>
-                <th scope="col">Unidade</th>
-                <th scope="col">Custo Unitário</th>
-                <th scope="col">Custo na Composição</th>
+                <th scope="col">Tipo</th> <!-- Existing Column for Type -->
+                <th scope="col">Código</th> <!-- Existing Column for Code -->
+                <th scope="col">Nome</th> <!-- Existing Column for Name -->
+                <th scope="col">Quantidade</th> <!-- Existing Column for Quantity -->
+                <th scope="col">Unidade</th> <!-- Existing Column for Unit -->
+                <th scope="col">Valor Unitário Desonerado</th> <!-- New Column -->
+                <th scope="col">Valor Unit. Não Desonerado</th> <!-- New Column -->
+                <th scope="col">Valor Desonerado</th> <!-- New Column replacing "Custo na Composição" -->
+                <th scope="col">Valor Não Desonerado</th> <!-- New Column replacing "Custo na Composição" -->
             </tr>
         </thead>
         <tbody>
-
             {% for comp_comp in composition.compositionchild_set.all %}
             <tr>
-                <td>C</td> <!-- New Cell for Composition -->
+                <td>C</td> <!-- Existing Cell for Composition -->
                 <td><a href="{% url 'compositions:composition_detail' comp_comp.child_composition.codigo %}">{{ comp_comp.child_composition.codigo }}</a></td>
                 <td><a href="{% url 'compositions:composition_detail' comp_comp.child_composition.codigo %}">{{ comp_comp.child_composition.name }}</a></td>
                 <td>{{ comp_comp.quantity|floatformat:3 }}</td>
                 <td>{{ comp_comp.child_composition.unit }}</td>
-                <td>{{ comp_comp.child_composition.total_cost|floatformat:2 }}</td>
-                <td>-</td>
+                <!-- Add new cells here for your new columns -->
+                <td>{{ comp_comp.child_composition.desonerado_cost }}</td> <!-- Valor Unitário Desonerado -->
+                <td>-</td> <!-- Valor Unit. Não Desonerado -->
+                <td>-</td> <!-- Valor Desonerado -->
+                <td>-</td> <!-- Valor Não Desonerado -->
             </tr>
             {% endfor %}
-
-            {% for comp_insumo in composition.compositioninsumo_set.all %}
+        
+            {% for insumo_entry in insumo_data %}
             <tr>
-                <td>I</td> <!-- New Cell for Insumo -->
-                <td>{{ comp_insumo.insumo.codigo }}</td>
-                <td>{{ comp_insumo.insumo.name }}</td>
-                <td>{{ comp_insumo.quantity|floatformat:3 }}</td>
-                <td>{{ comp_insumo.insumo.unit }}</td>
-                <td>{{ comp_insumo.insumo.currentcost|floatformat:2 }}</td>
-                <td>-</td>
+                <td>I</td>
+                <td><a href="{% url 'compositions:insumo_detail' insumo_entry.insumo.codigo %}">{{ insumo_entry.insumo.codigo }}</a></td>
+                <td><a href="{% url 'compositions:insumo_detail' insumo_entry.insumo.codigo %}">{{ insumo_entry.insumo.name }}</a></td>
+                <td>{{ insumo_entry.quantity|floatformat:3 }}</td>
+                <td>{{ insumo_entry.insumo.unit }}</td>
+                <td>{{ insumo_entry.latest_desonerado_cost.cost }}</td>
+                <td>{{ insumo_entry.latest_nao_desonerado_cost.cost }}</td>
+                <td>{{ insumo_entry.latest_desonerado_cost.cost|default:'N/A'|multiply:insumo_entry.quantity|floatformat:2 }}</td>
+                <td>{{ insumo_entry.latest_nao_desonerado_cost.cost|default:'N/A'|multiply:insumo_entry.quantity|floatformat:2 }}</td>
             </tr>
             {% endfor %}
-
         </tbody>
+        
     </table>
 
 </div>

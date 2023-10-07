@@ -1,17 +1,66 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Composition, CostHistory
+from .models import Composition, CostHistory, Insumo, State, CompositionInsumo
 from rest_framework import viewsets, status
 from .serializers import CompositionSerializer, CompositionDetailSerializer
 from django.db.models import Q, Count, F, ExpressionWrapper, fields, Prefetch
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-
-
-
 def composition_detail(request, codigo):
     composition = get_object_or_404(Composition, codigo=codigo)
-    return render(request, 'compositions/composition_detail.html', {'composition': composition})
+    composition_insumos = CompositionInsumo.objects.filter(composition=composition).select_related('insumo')
+
+
+    state = State.objects.get(id=1)
+
+    # Calculate the total cost
+    desonerado_cost = composition.calculate_cost(state=state, desonerado=CostHistory.DESONERADO)
+    nao_desonerado_cost = composition.calculate_cost(state=state, desonerado=CostHistory.NAO_DESONERADO)
+   
+
+    insumo_data = []
+
+    for comp_insumo in composition_insumos:
+        insumo = comp_insumo.insumo
+        quantity = comp_insumo.quantity
+
+        try:
+            latest_desonerado_cost = CostHistory.objects.filter(
+                insumo=insumo,
+                state=state,
+                cost_type=CostHistory.DESONERADO
+            ).latest('month_year')
+        except CostHistory.DoesNotExist:
+            latest_desonerado_cost = None
+
+        try:
+            latest_nao_desonerado_cost = CostHistory.objects.filter(
+                insumo=insumo,
+                state=state,
+                cost_type=CostHistory.NAO_DESONERADO
+            ).latest('month_year')
+        except CostHistory.DoesNotExist:
+            latest_nao_desonerado_cost = None
+
+        insumo_data.append({
+            'insumo': insumo,
+            'quantity': quantity,
+            'latest_desonerado_cost': latest_desonerado_cost,
+            'latest_nao_desonerado_cost': latest_nao_desonerado_cost,
+        })
+
+    context = {
+        'composition': composition,
+        'insumo_data': insumo_data,
+        'desonerado_cost': desonerado_cost,  # Add calculated total cost to the context
+        'nao_desonerado_cost': nao_desonerado_cost,  # Add calculated total cost to the context
+    }
+
+
+
+    return render(request, 'compositions/composition_detail.html', context)
+
+
 
 
 def composition_list(request):
@@ -24,6 +73,48 @@ def composition_list(request):
 
     return render(request, 'compositions/composition_list.html', {'compositions': compositions})
 
+
+
+
+def insumo_detail(request, codigo):
+    insumo = get_object_or_404(Insumo, codigo=codigo)
+    states = State.objects.all()
+    related_compositions = CompositionInsumo.objects.filter(insumo=insumo).select_related('composition')
+
+    state_costs = []
+
+    for state in states:
+        try:
+            latest_desonerado_cost = CostHistory.objects.filter(
+                insumo=insumo,
+                state=state,
+                cost_type=CostHistory.DESONERADO,
+            ).latest('month_year')
+        except CostHistory.DoesNotExist:
+            latest_desonerado_cost = None
+
+        try:
+            latest_nao_desonerado_cost = CostHistory.objects.filter(
+                insumo=insumo,
+                state=state,
+                cost_type=CostHistory.NAO_DESONERADO,
+            ).latest('month_year')
+        except CostHistory.DoesNotExist:
+            latest_nao_desonerado_cost = None
+
+        state_costs.append({
+            'state': state,
+            'latest_desonerado_cost': latest_desonerado_cost,
+            'latest_nao_desonerado_cost': latest_nao_desonerado_cost,
+        })
+
+    context = {
+        'insumo': insumo,
+        'state_costs': state_costs,
+        'related_compositions': related_compositions,
+    }
+
+    return render(request, 'compositions/insumo_detail.html', context)
 
 
 
@@ -59,9 +150,6 @@ class SearchCompositionView(APIView):
 
 
 
-
-
-
 class CompositionDetailView(APIView):
 
     queryset = Composition.objects.all()
@@ -75,3 +163,24 @@ class CompositionDetailView(APIView):
         else:
                 return Response({"error": "Composition not found"}, status=404)
 
+
+
+
+class CompositionCostView(APIView):
+
+    queryset = Composition.objects.all()
+
+    def get_serializer_context(self):
+        context = {
+            'state': self.request.GET.get('state', None),
+            'desonerado': self.request.GET.get('desonerado', None)
+        }
+        return context
+
+    def get(self, request, codigo, state, desonerado):
+        print(f"State in API view: {state}")  # Debugging line
+        print(f"Desonerado in API view: {desonerado}")  # Debugging line
+        composition = get_object_or_404(Composition, codigo=codigo)
+        serializer_context = self.get_serializer_context()
+        serializer = CompositionDetailSerializer(composition, context={'state': state, 'desonerado': desonerado})
+        return Response(serializer.data)
