@@ -8,5 +8,5 @@ router.register(r'compositions', CompositionViewSet)
 urlpatterns = router.urls + [
     path('search-compositions/', SearchCompositionView.as_view(), name='search_compositions'),
     path('composition/<str:codigo>/', CompositionDetailView.as_view(), name='composition_detail'),
-    path('compositioncost/<str:codigo>/<str:state>/<str:desonerado>/', CompositionCostView.as_view(), name='composition_cost'),
+    path('composition/<str:codigo>/<str:state>/<str:desonerado>/', CompositionCostView.as_view(), name='composition_cost'),
 ]

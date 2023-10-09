@@ -46,10 +46,7 @@ class Composition(models.Model):
   
     def calculate_cost(self, state=None, desonerado=None):
         from compositions.models import CostHistory
-        
-        
-       
-
+    
         print("In Calculate Cost")
         total_cost = 0
 
