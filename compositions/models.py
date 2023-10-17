@@ -55,7 +55,7 @@ class Composition(models.Model):
     insumos = models.ManyToManyField(Insumo, through='CompositionInsumo')
     compositions = models.ManyToManyField(
         'self', symmetrical=False, through='CompositionComposition', related_name='parent_compositions')
-    
+    grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE, related_name='compositions')
 
     # Fields for caderno tecnico
     ct_itens = models.TextField(null=True, blank=True)
