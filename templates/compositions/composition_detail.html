@@ -3,18 +3,20 @@
 
 {% block title %} {{ composition.name }} ({{ composition.codigo }})
 {% endblock %}
+
 {% block content %}
 <div class="container mt-5">
-    <h3>Detalhes da Composição</h3>
+    <div class="jumbotron">
+        <h1 class="">{{ composition.name }} ({{ composition.codigo }})</h1>
+        <p class="lead">Unidade: {{ composition.unit }}</p>
+        <hr class="my-4">
+        <p>Custo total da Composição: R${{ desonerado_cost }}</p>
+    </div>
+
+    <h3>Insumos e Composições:</h3>
     <hr>
-
-    <h4>{{ composition.name }} ({{ composition.codigo }})</h4>
-    <p>Unidade: {{ composition.unit }}</p>
-    <p>Custo total da Composição: R${{ desonerado_cost }}</p>
-
-    <h5>Insumos e Composições:</h5>
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
             <tr>
                 <th scope="col">Tipo</th> <!-- Existing Column for Type -->
                 <th scope="col">Código</th> <!-- Existing Column for Code -->
@@ -59,6 +61,29 @@
         </tbody>
         
     </table>
+
+    <h3 class="mt-5">Caderno Técnico:</h3>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Itens</h5>
+            <p class="card-text">{{ composition.ct_itens|linebreaks }}</p>
+
+            <h5 class="card-title">Equipamento</h5>
+            <p class="card-text">{{ composition.ct_equipamento|linebreaks }}</p>
+
+            <h5 class="card-title">Quantificação</h5>
+            <p class="card-text">{{ composition.ct_quantificacao|linebreaks }}</p>
+
+            <h5 class="card-title">Aferição</h5>
+            <p class="card-text">{{ composition.ct_afericao|linebreaks }}</p>
+
+            <h5 class="card-title">Execução</h5>
+            <p class="card-text">{{ composition.ct_execucao|linebreaks }}</p>
+
+            <h5 class="card-title">Complementares</h5>
+            <p class="card-text">{{ composition.ct_complementares|linebreaks }}</p>
+        </div>
+    </div>
 
 </div>
 {% endblock %}

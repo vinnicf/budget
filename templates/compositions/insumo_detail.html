@@ -3,12 +3,26 @@
 {% endblock %}
 {% block content %}
 <div class="container mt-5">
-    <h3>Detalhes do Insumo</h3>
+    <h1 class="display-4">{{ insumo.name }}</h1>
+    <small class="text-muted">Código: {{ insumo.codigo }}</small><br>
+    <small class="text-muted">Tipo: {{ insumo.insumo_type }}</small>
     <hr>
-    <h2>{{ insumo.name }}</h2>
-    <h3>((Código: {{ insumo.codigo }}))</h3>
 
-    <table class="table">
+    <div class="row mb-4">
+        <!-- Column for the image -->
+        <div class="col-md-6">
+            <img src="{{ MEDIA_URL }}insumos/{{ insumo.codigo }}.png" alt="Insumo Image" class="img-fluid">
+        </div>
+
+        <!-- Column for the detailed description -->
+        <div class="col-md-6" style="white-space: pre-line;">
+            {{ insumo.detaileddescription }}
+        </div>
+    </div>
+
+    <h3 class="mb-3">Custos por Estado</h3>
+
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Estado</th>
@@ -38,22 +52,21 @@
             {% endfor %}
         </tbody>
     </table>
-
+    <br><br>
     <h4>Composições Que Utilizam Este Insumo</h4>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Codigo</th>
             <th>Descrição</th>
-            <th>Coeficiente do Insumo na Composição</th>
+           
         </tr>
     </thead>
     <tbody>
         {% for comp_insumo in related_compositions %}
         <tr>
-            <td>{{ comp_insumo.composition.codigo }}</td>
-            <td>{{ comp_insumo.composition.name }}</td>
-            <td>{{ comp_insumo.quantity }}</td>
+            <td><a href="{% url 'compositions:composition_detail' comp_insumo.composition.codigo %}">{{ comp_insumo.composition.codigo }}</a></td>
+            <td><a href="{% url 'compositions:composition_detail' comp_insumo.composition.codigo %}">{{ comp_insumo.composition.name }}</a></td>
         </tr>
         {% endfor %}
     </tbody>

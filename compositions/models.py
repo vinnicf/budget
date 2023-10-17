@@ -10,6 +10,19 @@ class State(models.Model):
         return self.name
 
 
+
+class Classe(models.Model):
+    code = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.code
+
+class Grupo(models.Model):
+    name = models.CharField(max_length=200)
+    classe = models.ForeignKey(Classe, related_name='grupos', on_delete=models.CASCADE)
+
+
 class Insumo(models.Model):
     MATERIAL = 'MATERIAL'
     MO = 'MO'
@@ -28,6 +41,7 @@ class Insumo(models.Model):
         choices=TYPE_CHOICES,
         default=MATERIAL,
     )
+    detaileddescription = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -41,6 +55,16 @@ class Composition(models.Model):
     insumos = models.ManyToManyField(Insumo, through='CompositionInsumo')
     compositions = models.ManyToManyField(
         'self', symmetrical=False, through='CompositionComposition', related_name='parent_compositions')
+    
+
+    # Fields for caderno tecnico
+    ct_itens = models.TextField(null=True, blank=True)
+    ct_equipamento = models.TextField(null=True, blank=True)
+    ct_quantificacao = models.TextField(null=True, blank=True)
+    ct_afericao = models.TextField(null=True, blank=True)
+    ct_execucao = models.TextField(null=True, blank=True)
+    ct_complementares = models.TextField(null=True, blank=True)
+
 
 
   

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import State, Insumo, Composition, CompositionInsumo, CompositionComposition, CostHistory
+from .models import State, Insumo, Composition, CompositionInsumo, CompositionComposition, CostHistory, Classe, Grupo
 
 # Inlines
 
@@ -49,3 +49,21 @@ class CostHistoryAdmin(admin.ModelAdmin):
     list_display = ['insumo', 'state', 'month_year', 'cost']
     # Filtering by state and month_year can be helpful
     list_filter = ['state', 'month_year']
+
+
+# Define the admin class for Classe
+class ClasseAdmin(admin.ModelAdmin):
+    list_display = ('code', 'name')
+    search_fields = ('code', 'name')
+
+# Define the admin class for Grupo
+class GrupoAdmin(admin.ModelAdmin):
+    list_display = ('name', 'classe')
+    search_fields = ('name', 'classe__name', 'classe__code')
+    list_filter = ('classe',)
+
+
+
+# Register the models with their respective admin classes
+admin.site.register(Classe, ClasseAdmin)
+admin.site.register(Grupo, GrupoAdmin)
