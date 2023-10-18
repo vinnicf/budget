@@ -56,6 +56,8 @@ class ClasseAdmin(admin.ModelAdmin):
     list_display = ('code', 'name')
     search_fields = ('code', 'name')
 
+    
+
 # Define the admin class for Grupo
 class GrupoAdmin(admin.ModelAdmin):
     list_display = ('name', 'classe')

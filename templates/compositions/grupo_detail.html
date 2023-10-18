@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include "breadcrumb.html" %}
+<h1>{{ grupo.name }}</h1>
+<h3>Composições:</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Codigo</th>
+            <th>Descrição</th>
+            <th>Unidade</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for composition in compositions %}
+        <tr>
+            <td><a href="{% url 'compositions:composition_detail' composition.codigo %}">{{ composition.codigo }}</a></td>
+            <td><a href="{% url 'compositions:composition_detail' composition.codigo %}">{{ composition.name }}</a></td>
+            <td>{{ composition.unit }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+

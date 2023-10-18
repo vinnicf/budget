@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "breadcrumb.html" %}
+<div class="container mt-5">
+    <!-- Classe Header -->
+    <div class="jumbotron">
+        <h1 class="display-4">{{ classe.name }} <small class="text-muted">({{ classe.code }})</small></h1>
+        <p class="lead">Explore os Grupos de Composições Associados a esta Classe/Categoria</p>
+    </div>
+
+    <!-- Grupos Section -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h2>Grupos</h2>
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for grupo in grupos %}
+            <li class="list-group-item">
+                <a href="{% url 'compositions:grupo_detail' grupo.id %}">{{ grupo.descricao }}
+                    <small class="text-muted">({{ grupo.name }})</small></a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

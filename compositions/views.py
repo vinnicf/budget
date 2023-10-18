@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Composition, CostHistory, Insumo, State, CompositionInsumo
+from .models import Composition, CostHistory, Insumo, State, CompositionInsumo, Classe, Grupo
 from rest_framework import viewsets, status
 from .serializers import CompositionSerializer, CompositionDetailSerializer
 from django.db.models import Q, Count, F, ExpressionWrapper, fields, Prefetch
@@ -51,6 +51,7 @@ def composition_detail(request, codigo):
 
     context = {
         'composition': composition,
+        'grupo': composition.grupo,
         'insumo_data': insumo_data,
         'desonerado_cost': desonerado_cost,  # Add calculated total cost to the context
         'nao_desonerado_cost': nao_desonerado_cost,  # Add calculated total cost to the context
@@ -116,6 +117,40 @@ def insumo_detail(request, codigo):
 
     return render(request, 'compositions/insumo_detail.html', context)
 
+
+def classe_detail(request, code):
+    classe = get_object_or_404(Classe, code=code)
+    grupos = classe.grupos.all()
+    
+    context = {
+        'classe': classe,
+        'grupos': grupos,
+    }
+    
+    return render(request, 'compositions/classe_detail.html', context)
+
+
+def classes_list(request):
+    # Query all classes from the database
+    classes = Classe.objects.all()
+
+    # Render the list of classes using the template
+    context = {'classes': classes}
+    return render(request, 'compositions/classes_list.html', context)
+
+
+
+
+def grupo_detail(request, grupo_id):
+    grupo = get_object_or_404(Grupo, pk=grupo_id)
+    compositions = grupo.compositions.all()  # Using the reverse relation
+    
+    context = {
+        'grupo': grupo,
+        'compositions': compositions,
+    }
+    
+    return render(request, 'compositions/grupo_detail.html', context)
 
 
 

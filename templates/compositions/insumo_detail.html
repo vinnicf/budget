@@ -4,8 +4,8 @@
 {% block content %}
 <div class="container mt-5">
     <h1 class="display-4">{{ insumo.name }}</h1>
-    <small class="text-muted">Código: {{ insumo.codigo }}</small><br>
-    <small class="text-muted">Tipo: {{ insumo.insumo_type }}</small>
+    <small class="text-muted lead">Código: {{ insumo.codigo }}</small><br>
+    <small class="text-muted lead">Tipo: {{ insumo.insumo_type }}</small>
     <hr>
 
     <div class="row mb-4">
@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <h3 class="mb-3">Custos por Estado</h3>
+    <h3 class="mb-3">Custos por Estado (por {{insumo.unit }})</h3>
 
     <table class="table table-striped">
         <thead>
@@ -36,14 +36,14 @@
                 <td>{{ state_cost.state.name }}</td>
                 <td>
                     {% if state_cost.latest_desonerado_cost %}
-                        {{ state_cost.latest_desonerado_cost.cost }}
+                        R$ {{ state_cost.latest_desonerado_cost.cost }}
                     {% else %}
                         N/A
                     {% endif %}
                 </td>
                 <td>
                     {% if state_cost.latest_nao_desonerado_cost %}
-                        {{ state_cost.latest_nao_desonerado_cost.cost }}
+                        R$ {{ state_cost.latest_nao_desonerado_cost.cost }}
                     {% else %}
                         N/A
                     {% endif %}
@@ -53,7 +53,7 @@
         </tbody>
     </table>
     <br><br>
-    <h4>Composições Que Utilizam Este Insumo</h4>
+    <h4>Composições SINAPI Que Utilizam Este Insumo</h4>
 <table class="table table-striped">
     <thead>
         <tr>

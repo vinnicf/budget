@@ -19,8 +19,12 @@ class Classe(models.Model):
         return self.code
 
 class Grupo(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=10)
     classe = models.ForeignKey(Classe, related_name='grupos', on_delete=models.CASCADE)
+    descricao = models.CharField(max_length=200, null=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Insumo(models.Model):
@@ -55,7 +59,7 @@ class Composition(models.Model):
     insumos = models.ManyToManyField(Insumo, through='CompositionInsumo')
     compositions = models.ManyToManyField(
         'self', symmetrical=False, through='CompositionComposition', related_name='parent_compositions')
-    grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE, related_name='compositions')
+    grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE, related_name='compositions', null=True)
 
     # Fields for caderno tecnico
     ct_itens = models.TextField(null=True, blank=True)
