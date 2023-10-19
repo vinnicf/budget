@@ -7,7 +7,7 @@
             {% if grupo %}
             <span class="breadcrumb-separator">&gt;</span>
             <li class="breadcrumb-item">
-                <a href="{% url 'compositions:classe_detail' grupo.classe.code %}">{{ grupo.classe.name }}</a>
+                <a href="{% url 'compositions:classe_detail' grupo.classe.code %}">{{ grupo.classe.name }} ({{ grupo.classe.code }})</a>
             </li>
             <span class="breadcrumb-separator">&gt;</span>
             <li class="breadcrumb-item">

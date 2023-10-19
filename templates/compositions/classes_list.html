@@ -16,7 +16,7 @@
         <ul class="list-group list-group-flush">
             {% for classe in classes %}
                 <li class="list-group-item">
-                    <a href="{% url 'compositions:classe_detail' classe.code %}">{{ classe.name }} <small class="text-muted">({{ classe.code }})</small></a>
+                    <a href="{% url 'compositions:classe_detail' classe.code|lower %}">{{ classe.name }} <small class="text-muted">({{ classe.code }})</small></a>
                 </li>
             {% endfor %}
         </ul>

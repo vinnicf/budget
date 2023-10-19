@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Composition, CostHistory, Insumo, State, CompositionInsumo, Classe, Grupo
 from rest_framework import viewsets, status
 from .serializers import CompositionSerializer, CompositionDetailSerializer
@@ -119,9 +119,14 @@ def insumo_detail(request, codigo):
 
 
 def classe_detail(request, code):
-    classe = get_object_or_404(Classe, code=code)
-    grupos = classe.grupos.all().annotate(composition_count=Count('compositions'))
-    code = code.lower()
+    # Redirect to lowercase URL if the code is not lowercase
+    if code != code.lower():
+        return redirect('compositions:classe_detail', code=code.lower())
+
+    # Try to get the classe using the uppercase version of the code
+    classe = get_object_or_404(Classe, code=code.upper())
+    
+    grupos = classe.grupos.all()
     
     context = {
         'classe': classe,

@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('compositions/', include('compositions.urls')),
+    path('', include('compositions.urls')),
     path('api/', include('compositions.apiurls')),  # DRF endpoints
 ]
 

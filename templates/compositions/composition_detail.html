@@ -26,10 +26,7 @@
                 <th scope="col">Nome</th> <!-- Existing Column for Name -->
                 <th scope="col">Quantidade</th> <!-- Existing Column for Quantity -->
                 <th scope="col">Unidade</th> <!-- Existing Column for Unit -->
-                <th scope="col">Valor Unitário Desonerado</th> <!-- New Column -->
-                <th scope="col">Valor Unit. Não Desonerado</th> <!-- New Column -->
-                <th scope="col">Valor Desonerado</th> <!-- New Column replacing "Custo na Composição" -->
-                <th scope="col">Valor Não Desonerado</th> <!-- New Column replacing "Custo na Composição" -->
+
             </tr>
         </thead>
         <tbody>
@@ -40,11 +37,6 @@
                 <td><a href="{% url 'compositions:composition_detail' comp_comp.child_composition.codigo %}">{{ comp_comp.child_composition.name }}</a></td>
                 <td>{{ comp_comp.quantity|floatformat:3 }}</td>
                 <td>{{ comp_comp.child_composition.unit }}</td>
-                <!-- Add new cells here for your new columns -->
-                <td>{{ comp_comp.child_composition.desonerado_cost }}</td> <!-- Valor Unitário Desonerado -->
-                <td>-</td> <!-- Valor Unit. Não Desonerado -->
-                <td>-</td> <!-- Valor Desonerado -->
-                <td>-</td> <!-- Valor Não Desonerado -->
             </tr>
             {% endfor %}
         
@@ -54,11 +46,7 @@
                 <td><a href="{% url 'compositions:insumo_detail' insumo_entry.insumo.codigo %}">{{ insumo_entry.insumo.codigo }}</a></td>
                 <td><a href="{% url 'compositions:insumo_detail' insumo_entry.insumo.codigo %}">{{ insumo_entry.insumo.name }}</a></td>
                 <td>{{ insumo_entry.quantity|floatformat:3 }}</td>
-                <td>{{ insumo_entry.insumo.unit }}</td>
-                <td>{{ insumo_entry.latest_desonerado_cost.cost }}</td>
-                <td>{{ insumo_entry.latest_nao_desonerado_cost.cost }}</td>
-                <td>{{ insumo_entry.latest_desonerado_cost.cost|default:'N/A'|multiply:insumo_entry.quantity|floatformat:2 }}</td>
-                <td>{{ insumo_entry.latest_nao_desonerado_cost.cost|default:'N/A'|multiply:insumo_entry.quantity|floatformat:2 }}</td>
+                <td>{{ insumo_entry.insumo.unit }}</td>    
             </tr>
             {% endfor %}
         </tbody>
