@@ -3,15 +3,17 @@
 <div class="breadcrumb-container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item">SINAPI</li>
+            <li class="breadcrumb-item"><a href="{% url 'compositions:classes_list' %}">SINAPI</a></li>
             {% if grupo %}
+            <span class="breadcrumb-separator">&gt;</span>
             <li class="breadcrumb-item">
                 <a href="{% url 'compositions:classe_detail' grupo.classe.code %}">{{ grupo.classe.name }}</a>
             </li>
+            <span class="breadcrumb-separator">&gt;</span>
             <li class="breadcrumb-item">
                 <a href="{% url 'compositions:grupo_detail' grupo.id %}">{{ grupo.descricao}} ({{ grupo.name }})</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">{{ composition.name }}</li>
+            
             {% endif %}
         </ol>
     </nav>

@@ -120,7 +120,8 @@ def insumo_detail(request, codigo):
 
 def classe_detail(request, code):
     classe = get_object_or_404(Classe, code=code)
-    grupos = classe.grupos.all()
+    grupos = classe.grupos.all().annotate(composition_count=Count('compositions'))
+    code = code.lower()
     
     context = {
         'classe': classe,

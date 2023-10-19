@@ -17,8 +17,12 @@
         <ul class="list-group list-group-flush">
             {% for grupo in grupos %}
             <li class="list-group-item">
-                <a href="{% url 'compositions:grupo_detail' grupo.id %}">{{ grupo.descricao }}
-                    <small class="text-muted">({{ grupo.name }})</small></a>
+                <div style="display: flex; justify-content: space-between;">
+                    <a href="{% url 'compositions:grupo_detail' grupo.id %}">
+                        {{ grupo.descricao }} <small class="text-muted">({{ grupo.name }})</small>
+                    </a>
+                    <span>{{ grupo.composition_count }} Composições</span>
+                </div>
             </li>
             {% endfor %}
         </ul>

@@ -1,0 +1,26 @@
+.breadcrumb {
+    padding: 10px 10px;
+    font-size: 0.9em;
+}
+
+.breadcrumb a {
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb-separator {
+    padding: 0 5px; /* Add some spacing around the arrow */
+    color: #262627; 
+    font-weight: bold;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    font-weight: bold; /* Make it fatter */
+    font-size: larger; /* Make it slightly bigger */
+    margin: 0 0.5rem; /* Adjust spacing as needed */
+}

@@ -4,8 +4,9 @@
 {% block content %}
 <div class="container mt-5">
     <h1 class="display-4">{{ insumo.name }}</h1>
-    <small class="text-muted lead">Código: {{ insumo.codigo }}</small><br>
-    <small class="text-muted lead">Tipo: {{ insumo.insumo_type }}</small>
+    <small class="text-muted lead">Código SINAPI: {{ insumo.codigo }}</small><br>
+    <small class="text-muted lead">Tipo: {{ insumo.insumo_type }}</small><br>
+    <small class="text-muted lead">Unidade: {{ insumo.unit }}</small>
     <hr>
 
     <div class="row mb-4">
@@ -19,40 +20,7 @@
             {{ insumo.detaileddescription }}
         </div>
     </div>
-
-    <h3 class="mb-3">Custos por Estado (por {{insumo.unit }})</h3>
-
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Estado</th>
-                <th>Custo Desonerado</th>
-                <th>Custo Não Desonerado</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for state_cost in state_costs %}
-            <tr>
-                <td>{{ state_cost.state.name }}</td>
-                <td>
-                    {% if state_cost.latest_desonerado_cost %}
-                        R$ {{ state_cost.latest_desonerado_cost.cost }}
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </td>
-                <td>
-                    {% if state_cost.latest_nao_desonerado_cost %}
-                        R$ {{ state_cost.latest_nao_desonerado_cost.cost }}
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <br><br>
+<br>
     <h4>Composições SINAPI Que Utilizam Este Insumo</h4>
 <table class="table table-striped">
     <thead>

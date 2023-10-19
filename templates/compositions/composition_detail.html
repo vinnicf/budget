@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
 {% load math_filters %}
 
-{% block title %} {{ composition.name }} ({{ composition.codigo }})
+{% block title %}   SINAPI {{ composition.codigo }}: {{ composition.name }}
 {% endblock %}
 
 {% block content %}
 <div class="container mt-5">
     {% include "breadcrumb.html" %}
     <div class="jumbotron">
+        <h4>Composição SINAPI {{ composition.codigo }}</h4> <hr>
         <h1 class="">{{ composition.name }} ({{ composition.codigo }})</h1>
-        <p class="lead">Unidade: {{ composition.unit }}</p>
+        
         <hr class="my-4">
-        <p>Custo total da Composição: R${{ desonerado_cost }}</p>
+        <p class="lead">Unidade: {{ composition.unit }}</p>
     </div>
     
 
