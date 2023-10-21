@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Insumos SINAPI | Todos Insumos SINAPI - Orcamentor{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <form method="get" class="mb-3">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Pesquise por insumos por nome ou código" name="q" value="{{ request.GET.q }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Pesquisar</button>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Codigo</th>
+                <th>Descrição</th>
+                <th>Unidade</th>
+                <th>Tipo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for insumo in insumos %}
+            <tr>
+                <td>{{ insumo.codigo }}</td>
+                <td><a href="{% url 'compositions:insumo_detail' insumo.codigo %}">{{ insumo.name }}</a></td>
+                <td>{{ insumo.unit }}</td>
+                <td>{{ insumo.get_insumo_type_display }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No insumos found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if insumos.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ insumos.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Anterior</a></li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+            {% endif %}
+            
+            {% for num in insumos.paginator.page_range %}
+    {% if num >= start_page and num <= end_page %}
+        {% if num == insumos.number %}
+            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+        {% else %}
+            <li class="page-item"><a class="page-link" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ num }}</a></li>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+            
+            {% if insumos.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ insumos.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Próxima</a></li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Próxima</span></li>
+            {% endif %}
+        </ul>
+    </nav>
+    
+    
+
+</div>
+{% endblock %}

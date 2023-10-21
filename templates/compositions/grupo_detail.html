@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% block title %}Sinapi - {{ grupo.name }}: {{ grupo.descricao }}{% endblock %}
 {% block content %}
 {% include "breadcrumb.html" %}
 <h2>{{grupo.descricao }} <span class="text-muted">({{ grupo.name }})</span></h2>

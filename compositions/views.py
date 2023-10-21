@@ -1,10 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Composition, CostHistory, Insumo, State, CompositionInsumo, Classe, Grupo
 from rest_framework import viewsets, status
+from django.core.paginator import Paginator
 from .serializers import CompositionSerializer, CompositionDetailSerializer
 from django.db.models import Q, Count, F, ExpressionWrapper, fields, Prefetch
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.views.generic import ListView
+
+
+
+def home_view(request):
+    return render(request, 'home.html')
+    
 
 def composition_detail(request, codigo):
     composition = get_object_or_404(Composition, codigo=codigo)
@@ -63,7 +71,6 @@ def composition_detail(request, codigo):
 
 
 
-
 def composition_list(request):
     compositions = Composition.objects.all()
 
@@ -74,6 +81,36 @@ def composition_list(request):
 
     return render(request, 'compositions/composition_list.html', {'compositions': compositions})
 
+
+
+
+def insumo_list_view(request):
+    query = request.GET.get('q', '')
+    if query:
+        try:
+            # If the query can be cast to an int, also search by codigo
+            codigo_search = int(query)
+            queryset = Insumo.objects.filter(Q(name__icontains=query) | Q(codigo=codigo_search))
+        except ValueError:
+            # If the query is not an int, just search by name
+            queryset = Insumo.objects.filter(name__icontains=query)
+    else:
+        queryset = Insumo.objects.all().order_by('codigo')
+
+    paginator = Paginator(queryset, 100)
+    page_number = request.GET.get('page')
+    insumos = paginator.get_page(page_number)
+
+    start_page = insumos.number
+    end_page = min(insumos.number + 4, insumos.paginator.num_pages)
+
+    context = {
+        'insumos': insumos,
+        'start_page': start_page,
+        'end_page': end_page,
+    }
+
+    return render(request, 'insumo_list.html', context)
 
 
 
@@ -126,7 +163,7 @@ def classe_detail(request, code):
     # Try to get the classe using the uppercase version of the code
     classe = get_object_or_404(Classe, code=code.upper())
     
-    grupos = classe.grupos.all()
+    grupos = classe.grupos.all().annotate(composition_count=Count('compositions'))
     
     context = {
         'classe': classe,
@@ -202,7 +239,7 @@ class CompositionDetailView(APIView):
                 serializer = CompositionDetailSerializer(composition)
                 return Response(serializer.data)
         else:
-                return Response({"error": "Composition not found"}, status=404)
+                return Response({"error": "Composição não encontrada"}, status=404)
 
 
 
