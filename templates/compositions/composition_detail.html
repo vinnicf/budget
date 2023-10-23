@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load math_filters %}
 
+
 {% block title %}   SINAPI {{ composition.codigo }}: {{ composition.name }}
 {% endblock %}
 
@@ -35,7 +36,7 @@
                 <td>C</td> <!-- Existing Cell for Composition -->
                 <td><a href="{% url 'compositions:composition_detail' comp_comp.child_composition.codigo %}">{{ comp_comp.child_composition.codigo }}</a></td>
                 <td><a href="{% url 'compositions:composition_detail' comp_comp.child_composition.codigo %}">{{ comp_comp.child_composition.name }}</a></td>
-                <td>{{ comp_comp.quantity|floatformat:3 }}</td>
+                <td>{{ comp_comp.quantity|suppress_trailing_zeros }}</td>
                 <td>{{ comp_comp.child_composition.unit }}</td>
             </tr>
             {% endfor %}
@@ -45,7 +46,7 @@
                 <td>I</td>
                 <td><a href="{% url 'compositions:insumo_detail' insumo_entry.insumo.codigo %}">{{ insumo_entry.insumo.codigo }}</a></td>
                 <td><a href="{% url 'compositions:insumo_detail' insumo_entry.insumo.codigo %}">{{ insumo_entry.insumo.name }}</a></td>
-                <td>{{ insumo_entry.quantity|floatformat:3 }}</td>
+                <td>{{ insumo_entry.quantity|suppress_trailing_zeros }}</td>
                 <td>{{ insumo_entry.insumo.unit }}</td>    
             </tr>
             {% endfor %}
@@ -54,27 +55,65 @@
     </table>
 
     <h3 class="mt-5">Caderno Técnico:</h3>
-    <div class="card">
+    <div class="card mb-4 shadow"> <!-- Added shadow and margin-bottom -->
+        <div class="card-header font-weight-bold">
+            Itens
+        </div>
         <div class="card-body">
-            <h5 class="card-title">Itens</h5>
             <p class="card-text">{{ composition.ct_itens|linebreaks }}</p>
-
-            <h5 class="card-title">Equipamento</h5>
-            <p class="card-text">{{ composition.ct_equipamento|linebreaks }}</p>
-
-            <h5 class="card-title">Quantificação</h5>
-            <p class="card-text">{{ composition.ct_quantificacao|linebreaks }}</p>
-
-            <h5 class="card-title">Aferição</h5>
-            <p class="card-text">{{ composition.ct_afericao|linebreaks }}</p>
-
-            <h5 class="card-title">Execução</h5>
-            <p class="card-text">{{ composition.ct_execucao|linebreaks }}</p>
-
-            <h5 class="card-title">Complementares</h5>
-            <p class="card-text">{{ composition.ct_complementares|linebreaks }}</p>
         </div>
     </div>
+    
+    <!-- Equipamento section in its own card -->
+    <div class="card mb-4 shadow">
+        <div class="card-header font-weight-bold">
+            Equipamento
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ composition.ct_equipamento|linebreaks }}</p>
+        </div>
+    </div>
+
+      <!-- Equipamento section in its own card -->
+      <div class="card mb-4 shadow">
+        <div class="card-header font-weight-bold">
+            Quantificação
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ composition.ct_quantificacao|linebreaks }}</p>
+        </div>
+    </div>
+
+      <!-- Equipamento section in its own card -->
+      <div class="card mb-4 shadow">
+        <div class="card-header font-weight-bold">
+            Aferição
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ composition.ct_afericao|linebreaks }}</p>
+        </div>
+    </div>
+
+     <!-- Equipamento section in its own card -->
+     <div class="card mb-4 shadow">
+        <div class="card-header font-weight-bold">
+            Execução
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ composition.ct_execucao|linebreaks }}</p>
+        </div>
+    </div>
+
+         <!-- Equipamento section in its own card -->
+         <div class="card mb-4 shadow">
+            <div class="card-header font-weight-bold">
+                Complementares
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ composition.ct_complementares|linebreaks }}</p>
+            </div>
+        </div>
+         
 
 </div>
 {% endblock %}

@@ -24,7 +24,6 @@ def composition_detail(request, codigo):
     # Calculate the total cost
     desonerado_cost = composition.calculate_cost(state=state, desonerado=CostHistory.DESONERADO)
     nao_desonerado_cost = composition.calculate_cost(state=state, desonerado=CostHistory.NAO_DESONERADO)
-   
 
     insumo_data = []
 

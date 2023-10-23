@@ -24,3 +24,24 @@
     font-size: larger; /* Make it slightly bigger */
     margin: 0 0.5rem; /* Adjust spacing as needed */
 }
+
+
+
+.card {
+    font-family: 'Roboto', sans-serif;  
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Slight box shadow for cards */
+}
+
+.card-header {
+    background-color: #f5f5f5;  /* Lighter background for card header */
+    font-weight: 600;  /* Slightly bold */
+}
+
+.list-group-item {
+    padding: 15px 20px;  /* Increased padding */
+    border-bottom: 1px solid #e5e5e5;  /* Slight change in border color for softer look */
+}
+
+.card-body p {
+    font-size: 0.95rem;  /* Adjusting paragraph font size */
+}
