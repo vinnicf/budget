@@ -8,16 +8,50 @@
         <p class="lead">Explore as Classes e Categorias do SINAPI</p>
     </div>
 
-    <!-- Classes Section -->
+    <!-- Macrotema 01 -->
     <div class="card mt-4">
         <div class="card-header">
-            <h2>Classes</h2>
+            <h2>Habitação, Fundações e Estruturas</h2>
         </div>
         <ul class="list-group list-group-flush">
-            {% for classe in classes %}
+            {% for classe in classes_01 %}
                 <li class="list-group-item">
                     <a href="{% url 'compositions:classe_detail' classe.code|lower %}">{{ classe.name }} <small class="text-muted">({{ classe.code }})</small></a>
                 </li>
+            {% empty %}
+                <li class="list-group-item">No classes available.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Macrotema 02 -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h2>Instalações Hidráulicas e Elétricas Prediais e Redes de Distribuição de Energia Elétrica</h2>
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for classe in classes_02 %}
+                <li class="list-group-item">
+                    <a href="{% url 'compositions:classe_detail' classe.code|lower %}">{{ classe.name }} <small class="text-muted">({{ classe.code }})</small></a>
+                </li>
+            {% empty %}
+                <li class="list-group-item">No classes available.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Macrotema 03 -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h2>Saneamento e Infraestrutura Urbana</h2>
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for classe in classes_03 %}
+                <li class="list-group-item">
+                    <a href="{% url 'compositions:classe_detail' classe.code|lower %}">{{ classe.name }} <small class="text-muted">({{ classe.code }})</small></a>
+                </li>
+            {% empty %}
+                <li class="list-group-item">No classes available.</li>
             {% endfor %}
         </ul>
     </div>

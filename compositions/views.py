@@ -7,6 +7,7 @@ from django.db.models import Q, Count, F, ExpressionWrapper, fields, Prefetch
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.views.generic import ListView
+from collections import defaultdict
 
 
 
@@ -173,12 +174,19 @@ def classe_detail(request, code):
 
 
 def classes_list(request):
-    # Query all classes from the database
-    classes = Classe.objects.all()
+    # Query classes for each macrotema
+    classes_01 = Classe.objects.filter(macrotema='01')
+    classes_02 = Classe.objects.filter(macrotema='02')
+    classes_03 = Classe.objects.filter(macrotema='03')
 
     # Render the list of classes using the template
-    context = {'classes': classes}
+    context = {
+        'classes_01': classes_01,
+        'classes_02': classes_02,
+        'classes_03': classes_03,
+    }
     return render(request, 'compositions/classes_list.html', context)
+
 
 
 

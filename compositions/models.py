@@ -12,6 +12,17 @@ class State(models.Model):
 
 
 class Classe(models.Model):
+    CHOICES = [
+        ('01', 'Habitação, Fundações e Estruturas'),
+        ('02', 'Instalações Hidráulicas e Elétricas Prediais e Redes de Distribuição de Energia Elétrica'),
+        ('03', 'Saneamento e Infraestrutura Urbana'),
+    ]
+
+    macrotema = models.CharField(
+        max_length=2,
+        choices=CHOICES,
+        default='01',  # Optional default
+    )
     code = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=200)
 
@@ -70,8 +81,6 @@ class Composition(models.Model):
     ct_execucao = models.TextField(null=True, blank=True)
     ct_complementares = models.TextField(null=True, blank=True)
 
-
-
   
     def calculate_cost(self, state=None, desonerado=None):
         from compositions.models import CostHistory
@@ -81,7 +90,7 @@ class Composition(models.Model):
 
         if desonerado not in [CostHistory.DESONERADO, CostHistory.NAO_DESONERADO]:
             print(f"Invalid desonerado value: {desonerado}")
-            return 0  # Or some other way to signal the error
+            return 0 
 
         # Calculate cost for insumos in this composition
         for comp_insumo in self.compositioninsumo_set.all():
