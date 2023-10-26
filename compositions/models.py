@@ -86,11 +86,13 @@ class Composition(models.Model):
         from compositions.models import CostHistory
     
         print("In Calculate Cost")
-        total_cost = 0
+        total_cost = Decimal('0.00')
+        material_cost = Decimal('0.00')
+        mo_cost = Decimal('0.00')
 
         if desonerado not in [CostHistory.DESONERADO, CostHistory.NAO_DESONERADO]:
             print(f"Invalid desonerado value: {desonerado}")
-            return 0 
+            return total_cost, mo_cost
 
         # Calculate cost for insumos in this composition
         for comp_insumo in self.compositioninsumo_set.all():
@@ -110,6 +112,10 @@ class Composition(models.Model):
                 print(f"Custo calculado total para o insumo {comp_insumo.insumo.codigo}: {individual_cost}")
                 total_cost += individual_cost
 
+                # Categorize costs based on the type of Insumo
+                if comp_insumo.insumo.insumo_type == Insumo.MO:
+                    mo_cost += individual_cost
+
             else:
                 print(f"No cost history found for insumo: {comp_insumo.insumo.codigo}")
             
@@ -117,21 +123,23 @@ class Composition(models.Model):
 
         # Calculate cost for child compositions
         for comp_comp in self.compositionchild_set.all():
-            child_composition_cost = comp_comp.child_composition.calculate_cost(state, desonerado)
+            child_composition_cost, child_material_cost, child_mo_cost = comp_comp.child_composition.calculate_cost(state, desonerado)
             child_composition_total_cost = child_composition_cost * comp_comp.quantity
             child_composition_total_cost = child_composition_total_cost.quantize(Decimal('0.00'), rounding=ROUND_DOWN)
             total_cost += child_composition_total_cost
+            mo_cost += (child_mo_cost * comp_comp.quantity).quantize(Decimal('0.00'), rounding=ROUND_DOWN)
 
         print(f"Total cost: {total_cost}")
+        print(f"MO cost: {mo_cost}")
 
        
 
-        total_cost = Decimal(total_cost).quantize(Decimal('0.00'), rounding=ROUND_DOWN)
+        total_cost = total_cost.quantize(Decimal('0.00'), rounding=ROUND_DOWN)
+        mo_cost = mo_cost.quantize(Decimal('0.00'), rounding=ROUND_DOWN)
+        material_cost = total_cost - mo_cost
 
-        return total_cost
+        return total_cost, material_cost, mo_cost
 
-    def total_cost(self, state=None, desonerado=None):
-        return self.calculate_cost(state, desonerado)
 
     def __str__(self):
         return self.name

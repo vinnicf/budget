@@ -1,24 +1,14 @@
-##Cache version of the cost_calculator method in the Composition
-
-
-    cost_cache = {}
-
     def calculate_cost(self, state=None, desonerado=None):
         from compositions.models import CostHistory
-        
-        cache_key = f"{self.id}-{state}-{desonerado}"  # Create a unique key for each set of arguments
-
-        # Check if the cost is already cached
-        if cache_key in Composition.cost_cache:
-            print("Cost retrieved from cache")
-            return Composition.cost_cache[cache_key]
-
+    
         print("In Calculate Cost")
-        total_cost = 0
+        total_cost = Decimal('0.00')
+        material_cost = Decimal('0.00')
+        mo_cost = Decimal('0.00')
 
         if desonerado not in [CostHistory.DESONERADO, CostHistory.NAO_DESONERADO]:
             print(f"Invalid desonerado value: {desonerado}")
-            return 0  # Or some other way to signal the error
+            return total_cost, material_cost, mo_cost
 
         # Calculate cost for insumos in this composition
         for comp_insumo in self.compositioninsumo_set.all():
@@ -38,6 +28,12 @@
                 print(f"Custo calculado total para o insumo {comp_insumo.insumo.codigo}: {individual_cost}")
                 total_cost += individual_cost
 
+                # Categorize costs based on the type of Insumo
+                if comp_insumo.insumo.insumo_type == Insumo.MATERIAL:
+                    material_cost += individual_cost
+                elif comp_insumo.insumo.insumo_type == Insumo.MO:
+                    mo_cost += individual_cost
+
             else:
                 print(f"No cost history found for insumo: {comp_insumo.insumo.codigo}")
             
@@ -45,13 +41,23 @@
 
         # Calculate cost for child compositions
         for comp_comp in self.compositionchild_set.all():
-            child_composition_cost = comp_comp.child_composition.calculate_cost(state, desonerado)
-            total_cost += child_composition_cost * comp_comp.quantity
+            child_composition_cost, child_material_cost, child_mo_cost = comp_comp.child_composition.calculate_cost(state, desonerado)
+            child_composition_total_cost = child_composition_cost * comp_comp.quantity
+            child_composition_total_cost = child_composition_total_cost.quantize(Decimal('0.00'), rounding=ROUND_DOWN)
+            total_cost += child_composition_total_cost
+
+            material_cost += (child_material_cost * comp_comp.quantity).quantize(Decimal('0.00'), rounding=ROUND_DOWN)
+            mo_cost += (child_mo_cost * comp_comp.quantity).quantize(Decimal('0.00'), rounding=ROUND_DOWN)
 
         print(f"Total cost: {total_cost}")
+        print(f"Material cost: {material_cost}")
+        print(f"MO cost: {mo_cost}")
 
-        # Cache the total cost before returning it
-        Composition.cost_cache[cache_key] = total_cost
-        print("Cost stored in cache")
+       
 
-        total_cost = Decimal(total_cost).quantize(Decimal('0.00'), rounding=ROUND_DOWN)
+        total_cost = total_cost.quantize(Decimal('0.00'), rounding=ROUND_DOWN)
+        material_cost = material_cost.quantize(Decimal('0.00'), rounding=ROUND_DOWN)
+        mo_cost = mo_cost.quantize(Decimal('0.00'), rounding=ROUND_DOWN)
+
+        return total_cost, material_cost, mo_cost
+

@@ -35,16 +35,28 @@ class CompositionDetailSerializer(serializers.ModelSerializer):
     compositioninsumo_set = CompositionInsumoSerializer(many=True, read_only=True)
     compositionchild_set = CompositionCompositionSerializer(many=True, read_only=True)
     total_cost = serializers.SerializerMethodField()
+    material_cost = serializers.SerializerMethodField()
+    mo_cost = serializers.SerializerMethodField()
     
     class Meta:
         model = Composition
-        fields = ('id', 'codigo', 'name', 'unit', 'comp_cost', 'compositioninsumo_set', 'compositionchild_set', 'total_cost')
+        fields = ('id', 'codigo', 'name', 'unit', 'comp_cost', 'compositioninsumo_set', 'compositionchild_set', 'total_cost', 'material_cost', 'mo_cost')
         depth = 1
 
     def get_total_cost(self, obj):
         state = self.context.get('state', None)
         desonerado = self.context.get('desonerado', None)
-        return obj.calculate_cost(state=state, desonerado=desonerado)
+        return obj.calculate_cost(state=state, desonerado=desonerado)[0]
+        
+    def get_material_cost(self, obj):
+        state = self.context.get('state', None)
+        desonerado = self.context.get('desonerado', None)
+        return obj.calculate_cost(state=state, desonerado=desonerado)[1]
+
+    def get_mo_cost(self, obj):
+        state = self.context.get('state', None)
+        desonerado = self.context.get('desonerado', None)
+        return obj.calculate_cost(state=state, desonerado=desonerado)[2]
 
 
 class CostHistorySerializer(serializers.ModelSerializer):

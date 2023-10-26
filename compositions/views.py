@@ -269,3 +269,5 @@ class CompositionCostView(APIView):
         serializer_context = self.get_serializer_context()
         serializer = CompositionDetailSerializer(composition, context={'state': state, 'desonerado': desonerado})
         return Response(serializer.data)
+
+
