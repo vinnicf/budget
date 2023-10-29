@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
+    {% block head_meta %}{% endblock %}
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
@@ -24,7 +25,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-        
+
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'compositions:classes_list' %}">Composições</a>
                 </li>
@@ -39,7 +40,7 @@
             </ul>
         </div>
     </nav>
-    
+
 
     <div class="container mt-4">
         {% block content %}
@@ -52,7 +53,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-   
+
     {% block extra_js %}
     {% endblock %}
     <footer class="footer bg-light mt-5">
