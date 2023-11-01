@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Composition, CostHistory, Insumo, State, CompositionInsumo, Classe, Grupo
 from rest_framework import viewsets, status
 from django.core.paginator import Paginator
-from .serializers import CompositionSerializer, CompositionDetailSerializer
+from .serializers import CompositionSerializer, CompositionDetailSerializer, InsumoSerializer, CostHistorySerializer
 from django.db.models import Q, Count, F, ExpressionWrapper, fields, Prefetch
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -21,48 +21,23 @@ def composition_detail(request, codigo):
 
 
     state = State.objects.get(id=1)
-
-    # Calculate the total cost
-    desonerado_cost = composition.calculate_cost(state=state, desonerado=CostHistory.DESONERADO)
-    nao_desonerado_cost = composition.calculate_cost(state=state, desonerado=CostHistory.NAO_DESONERADO)
-
     insumo_data = []
 
     for comp_insumo in composition_insumos:
         insumo = comp_insumo.insumo
         quantity = comp_insumo.quantity
 
-        try:
-            latest_desonerado_cost = CostHistory.objects.filter(
-                insumo=insumo,
-                state=state,
-                cost_type=CostHistory.DESONERADO
-            ).latest('month_year')
-        except CostHistory.DoesNotExist:
-            latest_desonerado_cost = None
-
-        try:
-            latest_nao_desonerado_cost = CostHistory.objects.filter(
-                insumo=insumo,
-                state=state,
-                cost_type=CostHistory.NAO_DESONERADO
-            ).latest('month_year')
-        except CostHistory.DoesNotExist:
-            latest_nao_desonerado_cost = None
+    
 
         insumo_data.append({
             'insumo': insumo,
             'quantity': quantity,
-            'latest_desonerado_cost': latest_desonerado_cost,
-            'latest_nao_desonerado_cost': latest_nao_desonerado_cost,
         })
 
     context = {
         'composition': composition,
         'grupo': composition.grupo,
         'insumo_data': insumo_data,
-        'desonerado_cost': desonerado_cost,  # Add calculated total cost to the context
-        'nao_desonerado_cost': nao_desonerado_cost,  # Add calculated total cost to the context
     }
 
 
@@ -262,12 +237,66 @@ class CompositionCostView(APIView):
         }
         return context
 
-    def get(self, request, codigo, state, desonerado):
-        print(f"State in API view: {state}")  # Debugging line
+    def get(self, request, codigo, state_name, desonerado):
+        print(f"State in API view: {state_name}")  # Debugging line
         print(f"Desonerado in API view: {desonerado}")  # Debugging line
+        # Get the State object using state_name
+        state = get_object_or_404(State, name=state_name)
+
         composition = get_object_or_404(Composition, codigo=codigo)
         serializer_context = self.get_serializer_context()
         serializer = CompositionDetailSerializer(composition, context={'state': state, 'desonerado': desonerado})
         return Response(serializer.data)
 
 
+
+class SearchInsumoView(APIView):
+
+    def get_queryset(self):
+        return Insumo.objects.all()
+
+    def get(self, request):
+        codigo = request.GET.get('codigo')
+        name = request.GET.get('name')
+        insumo_type = request.GET.get('insumo_type')
+        
+        filters = {}
+        if codigo and codigo != "[object Object]":
+            filters['codigo'] = codigo
+        if name:
+            filters['name__icontains'] = name
+        if insumo_type:
+            filters['insumo_type'] = insumo_type
+
+        insumos = self.get_queryset().filter(**filters)[:30] if filters else Insumo.objects.none()
+
+        print("Filtered Insumos:", insumos)  # Debugging line
+
+        serializer = InsumoSerializer(insumos, many=True)
+        return Response(serializer.data)
+
+
+class InsumoCostView(APIView):
+
+    def get_queryset(self):
+        return Insumo.objects.all()
+
+    def get(self, request, codigo, state_name, desonerado):
+        # Get the corresponding Insumo and State objects
+        insumo = get_object_or_404(Insumo, codigo=codigo)
+        state = get_object_or_404(State, name=state_name)
+
+        # Get the latest cost
+        try:
+            latest_cost = CostHistory.objects.filter(
+                insumo=insumo,
+                state=state,
+                cost_type=desonerado
+            ).latest('month_year')
+        except CostHistory.DoesNotExist:
+            return Response({"error": "Cost history not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Serialize the data
+        serializer = CostHistorySerializer(latest_cost)
+
+        return Response(serializer.data)
