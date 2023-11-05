@@ -10,6 +10,7 @@ urlpatterns = [
     path('', include('compositions.urls')),
     path('api/', include('compositions.apiurls')),  # DRF endpoints
     path('app/', ReactAppView.as_view(), name='react_app'),
+    path('usuario/', include ('users.urls')),
 ]
 
 if settings.DEBUG:

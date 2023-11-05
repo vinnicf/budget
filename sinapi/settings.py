@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'compositions',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
-    'users'
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -82,7 +83,10 @@ WSGI_APPLICATION = 'sinapi.wsgi.application'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    ], 
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -128,6 +132,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+AUTH_USER_MODEL = 'users.CustomUser'
 
 
 # Static files (CSS, JavaScript, Images)

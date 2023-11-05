@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cadastre se - Por Isso Estou Quebrado{% endblock %}
+
+{% block content %}
+
+
+<div class="container container-login">
+
+  <h4 style="text-align:left">Seja Bem Vindo!</h4>
+  <p>Cria sua conta para salvar na sua lista de desejos</p>
+  <form method="post">
+    {% csrf_token %}
+
+    <div style="text-align:center">
+
+      <button class="btn btn-primary" type="submit">Cadastrar</button>
+    </div>
+  </form>
+  <br>
+  Já tem uma conta? <a href="#"><b>Entrar</b></a>
+  <br>
+</div>
+
+{% endblock %}

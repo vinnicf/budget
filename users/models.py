@@ -5,3 +5,5 @@ from django.db import models
 
 class CustomUser(AbstractUser):
         age = models.PositiveIntegerField(null=True, blank=True)
+        is_standard = models.BooleanField(default=True)
+        is_premium = models.BooleanField(default=False)
