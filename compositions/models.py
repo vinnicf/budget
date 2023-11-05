@@ -105,8 +105,6 @@ class Composition(models.Model):
             ).last()
 
             if cost_history:
-                print(f"Custo unitário do insumo {comp_insumo.insumo.name}: {cost_history.cost}")
-                print(f"Coeficiente para insumo {comp_insumo.insumo.codigo}: {comp_insumo.quantity}")
                 individual_cost = Decimal(cost_history.cost) * Decimal(str(comp_insumo.quantity))
                 individual_cost = individual_cost.quantize(Decimal('0.00'), rounding=ROUND_DOWN)  # Round down to 2 decimal places
                 print(f"Custo calculado total para o insumo {comp_insumo.insumo.codigo}: {individual_cost}")
@@ -144,9 +142,7 @@ class Composition(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        self.comp_cost = self.calculate_cost()
-        super().save(*args, **kwargs)
+
 
 
 class CompositionInsumo(models.Model):
