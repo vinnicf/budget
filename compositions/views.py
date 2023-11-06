@@ -3,7 +3,8 @@ from .models import Composition, CostHistory, Insumo, State, CompositionInsumo, 
 from rest_framework import viewsets, status
 from django.core.paginator import Paginator
 from .serializers import CompositionSerializer, CompositionDetailSerializer, InsumoSerializer, CostHistorySerializer
-from django.db.models import Q, Count, F, ExpressionWrapper, fields, Prefetch
+from django.db.models import Q, Count, F, ExpressionWrapper, fields, Prefetch, Case, When, Value, CharField, IntegerField, Count
+from django.db.models.functions import Lower
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.views.generic import ListView
@@ -186,6 +187,34 @@ class CompositionViewSet(viewsets.ModelViewSet):
     lookup_field = 'codigo'
     
 
+
+def get_relevant_queryset(model, search_term):
+    if not search_term:
+        return model.objects.none()
+
+    words = search_term.split()
+    # Create Q objects for each word in the search term for icontains search.
+    word_queries = [Q(name__icontains=word) for word in words]
+
+    # Construct a single query that requires all words to match.
+    all_words_query = Q()
+    for query in word_queries:
+        all_words_query &= query
+
+    # Create the queryset filtering by the constructed all_words_query
+    # Annotate with a boolean indicating if the name starts with the search term.
+    queryset = model.objects.filter(all_words_query).annotate(
+        starts_with_search=Case(
+            When(name__istartswith=search_term, then=Value(True)),
+            default=Value(False),
+            output_field=IntegerField(),
+        )
+    ).order_by('-starts_with_search', 'name')  # Order by starts_with_search descending
+
+    return queryset
+
+
+
 class SearchCompositionView(APIView):
 
     def get_queryset(self):
@@ -198,15 +227,19 @@ class SearchCompositionView(APIView):
         
         if codigo and codigo != "[object Object]":
             compositions = Composition.objects.filter(codigo=codigo)
+
+        # Handle search by name
         elif name:
-            compositions = Composition.objects.filter(name__icontains=name)[:30]
+            compositions = get_relevant_queryset(Composition, name)[:30]
+            
+
         else:
             compositions = Composition.objects.none()
-
-        print("Filtered Compositions:", compositions)  
-
+        
         serializer = CompositionSerializer(compositions, many=True)
         return Response(serializer.data)
+
+
 
 
 
@@ -249,31 +282,31 @@ class CompositionCostView(APIView):
         return Response(serializer.data)
 
 
-
 class SearchInsumoView(APIView):
 
     def get_queryset(self):
         return Insumo.objects.all()
 
+
     def get(self, request):
         codigo = request.GET.get('codigo')
         name = request.GET.get('name')
-        insumo_type = request.GET.get('insumo_type')
         
-        filters = {}
         if codigo and codigo != "[object Object]":
-            filters['codigo'] = codigo
-        if name:
-            filters['name__icontains'] = name
-        if insumo_type:
-            filters['insumo_type'] = insumo_type
+            insumos = Insumo.objects.filter(codigo=codigo)
 
-        insumos = self.get_queryset().filter(**filters)[:30] if filters else Insumo.objects.none()
+        # Handle search by name
+        elif name:
+            insumos = get_relevant_queryset(Insumo, name)[:30]
+            
 
-        print("Filtered Insumos:", insumos)  # Debugging line
-
+        else:
+            insumos = Insumo.objects.none()
+        
         serializer = InsumoSerializer(insumos, many=True)
         return Response(serializer.data)
+
+
 
 
 class InsumoCostView(APIView):
