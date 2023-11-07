@@ -164,6 +164,33 @@ def classes_list(request):
     return render(request, 'compositions/classes_list.html', context)
 
 
+def composition_search_view(request):
+    query = request.GET.get('q', '')
+    if query:
+        try:
+            # Assuming Composition model has 'name' and 'codigo' fields like Insumo
+            codigo_search = int(query)
+            queryset = Composition.objects.filter(Q(name__icontains=query) | Q(codigo=codigo_search))
+        except ValueError:
+            queryset = get_relevant_queryset(Composition, query)
+    else:
+        queryset = Composition.objects.all().order_by('codigo')
+
+    paginator = Paginator(queryset, 100)  # Adjust the pagination as needed
+    page_number = request.GET.get('page')
+    compositions = paginator.get_page(page_number)
+
+    start_page = compositions.number
+    end_page = min(compositions.number + 4, compositions.paginator.num_pages)
+
+    context = {
+        'compositions': compositions,
+        'start_page': start_page,
+        'end_page': end_page,
+        'query': query,  # Add the query to the context for the form value
+    }
+
+    return render(request, 'compositions/composition_search.html', context)
 
 
 

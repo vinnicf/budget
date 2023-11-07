@@ -4,9 +4,18 @@
 <div class="container mt-5">
     <!-- Header Section -->
     <div class="jumbotron">
-        <h1 class="display-4">Classes de Composições SINAPI</h1>
-        <p class="lead">Explore as Classes e Categorias do SINAPI</p>
+        <h1 class="display-4">Composições SINAPI</h1>
+        <p class="lead">Explore as Composições do SINAPI por Classes, Grupos e Cadernos, ou utilize a caixa de pesquisa abaixo</p>
     </div>
+
+    <form method="get" class="mb-3" action="{% url 'compositions:composition_search' %}">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Pesquise por composições por nome ou código" name="q" value="{{ request.GET.q }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Pesquisar</button>
+            </div>
+        </div>
+    </form>
 
     <!-- Macrotema 01 -->
     <div class="card mt-4">

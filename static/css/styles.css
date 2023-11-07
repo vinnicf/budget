@@ -1,3 +1,14 @@
+#root {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .bg-light {
+    background-color: white;
+  }
+
 .breadcrumb {
     padding: 10px 10px;
     font-size: 0.9em;
