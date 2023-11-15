@@ -58,6 +58,19 @@ class Insumo(models.Model):
     )
     detaileddescription = models.TextField(null=True, blank=True)
 
+    def update_current_cost(self):
+        sp_state = State.objects.get(name='SP')
+
+        latest_cost_history = CostHistory.objects.filter(
+            insumo=self,
+            state=sp_state,
+            cost_type=CostHistory.NAO_DESONERADO
+        ).order_by('-month_year').first()
+
+        if latest_cost_history:
+            self.currentcost = latest_cost_history.cost
+            self.save()
+
 
     def __str__(self):
         return self.name

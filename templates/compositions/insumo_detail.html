@@ -4,9 +4,21 @@
 {% block content %}
 <div class="container mt-5">
     <h1 class="display-4">{{ insumo.name }}</h1>
-    <small class="text-muted lead">Código SINAPI: {{ insumo.codigo }}</small><br>
-    <small class="text-muted lead">Tipo: {{ insumo.insumo_type }}</small><br>
-    <small class="text-muted lead">Unidade: {{ insumo.unit }}</small>
+    <hr>
+    <div class="row">
+        <!-- Column for current cost -->
+        <div class="col-md-4">
+            <h2 style="">R$ {{ insumo.currentcost|floatformat:2 }}</h2>
+            <small class="text-muted">Custo por {{ insumo.unit }}, referente ao estado de São Paulo para o mês de outubro de 2023</small>
+        </div>
+
+        <!-- Column for other details -->
+        <div class="col-md-8">
+            <small class="text-muted lead">Código SINAPI: {{ insumo.codigo }}</small><br>
+            <small class="text-muted lead">Tipo: {{ insumo.insumo_type }}</small><br>
+            <small class="text-muted lead">Unidade: {{ insumo.unit }}</small>
+        </div>
+    </div>
     <hr>
 
     <div class="row mb-4">
@@ -18,12 +30,13 @@
         <!-- Column for the detailed description -->
         <div class="col-md-6" style="white-space: pre-line;">
             {{ insumo.detaileddescription }}
+            
         </div>
     </div>
 <br>
     <h4>Composições SINAPI Que Utilizam Este Insumo</h4>
 <table class="table table-striped">
-    <thead>
+    <thead>0
         <tr>
             <th>Codigo</th>
             <th>Descrição</th>

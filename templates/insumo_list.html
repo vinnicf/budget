@@ -2,6 +2,10 @@
 {% block title %}Insumos SINAPI | Todos Insumos SINAPI - Orcamentor{% endblock %}
 {% block content %}
 <div class="container mt-5">
+    <div class="jumbotron">
+        <h1 class="display-4">Insumos SINAPI</h1>
+        <p class="lead">Explore os insumos da base de Dados SINAPI</p>
+    </div>
     <form method="get" class="mb-3">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Pesquise por insumos por nome ou código" name="q" value="{{ request.GET.q }}">
