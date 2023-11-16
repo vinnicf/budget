@@ -12,13 +12,29 @@
         <h4>Composição SINAPI {{ composition.codigo }}</h4> <hr>
         <h1 class="display-4">{{ composition.name }} ({{ composition.codigo }})</h1>
         
-        <hr class="my-4">
-        <p class="lead">Unidade: {{ composition.unit }}</p>
+
+ 
     </div>
+    <hr class="my-4">
+    <div class="row">
+        <!-- Column for current cost -->
+        <div class="col-md-4">
+            <h2 style="">R$ {{ composition.comp_cost|floatformat:2 }}</h2>
+            <small class="text-muted">Custo médio nacional por {{ composition.unit }} para o mês de outubro de 2023.</small>
+        </div>
+
+        <!-- Column for other details -->
+        <div class="col-md-8">
+            <small class="text-muted lead">Código SINAPI: {{ composition.codigo }}</small><br>
+            <br>
+            <small class="text-muted lead">Unidade: {{ composition.unit }}</small>
+        </div>
+    </div>
+    <hr>
     
 
     <h3>Insumos e Composições:</h3>
-    <hr>
+    
     <table class="table table-striped table-hover">
         <thead class="thead-dark">
             <tr>

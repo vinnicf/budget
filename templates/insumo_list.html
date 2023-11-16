@@ -20,6 +20,7 @@
             <tr>
                 <th>Codigo</th>
                 <th>Descrição</th>
+                <th>Custo</th>
                 <th>Unidade</th>
                 <th>Tipo</th>
             </tr>
@@ -29,6 +30,7 @@
             <tr>
                 <td>{{ insumo.codigo }}</td>
                 <td><a href="{% url 'compositions:insumo_detail' insumo.codigo %}">{{ insumo.name }}</a></td>
+                <td>R$ {{ insumo.currentcost|floatformat:2 }}</td>
                 <td>{{ insumo.unit }}</td>
                 <td>{{ insumo.get_insumo_type_display }}</td>
             </tr>

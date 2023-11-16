@@ -33,6 +33,11 @@ class CompositionAdmin(admin.ModelAdmin):
     inlines = [CompositionInsumoInline, CompositionCompositionInline]
     search_fields = ['codigo']
 
+    def get_readonly_fields(self, request, obj=None):
+        if obj:  # Editing an existing object
+            return ['comp_cost', 'comp_mo_cost', 'comp_material_cost']
+        return []
+
 
 @admin.register(CompositionInsumo)
 class CompositionInsumoAdmin(admin.ModelAdmin):

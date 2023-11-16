@@ -79,8 +79,12 @@ class Composition(models.Model):
     codigo = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=400)
     unit = models.CharField(max_length=10)
+
+    # Fields for an easy to access cost on the DB
     comp_cost = models.DecimalField(max_digits=25, decimal_places=2, default=0.00, editable=False)
-    # Here we have a ManyToMany relationship with a through model to capture quantity
+    comp_mo_cost = models.DecimalField(max_digits=25, decimal_places=2, default=0.00, editable=False)
+    comp_material_cost = models.DecimalField(max_digits=25, decimal_places=2, default=0.00, editable=False)
+
     insumos = models.ManyToManyField(Insumo, through='CompositionInsumo')
     compositions = models.ManyToManyField(
         'self', symmetrical=False, through='CompositionComposition', related_name='parent_compositions')
@@ -143,8 +147,6 @@ class Composition(models.Model):
         print(f"Total cost: {total_cost}")
         print(f"MO cost: {mo_cost}")
 
-       
-
         total_cost = total_cost.quantize(Decimal('0.00'), rounding=ROUND_DOWN)
         mo_cost = mo_cost.quantize(Decimal('0.00'), rounding=ROUND_DOWN)
         material_cost = total_cost - mo_cost
@@ -154,6 +156,22 @@ class Composition(models.Model):
 
     def __str__(self):
         return self.name
+
+    def update_composition_costs(self):
+        # Assuming there's a State model and 'SP' is the state code for São Paulo
+        sp_state = State.objects.get(name='SP')
+        nao_desonerado = 'nao_desonerado'
+
+        # Use the calculate_cost method
+        total_cost, material_cost, mo_cost = self.calculate_cost(state=sp_state, desonerado=nao_desonerado)
+
+        # Update the cost fields
+        self.comp_cost = total_cost
+        self.comp_material_cost = material_cost
+        self.comp_mo_cost = mo_cost
+
+        # Save the updated composition instance
+        self.save()
 
 
 
