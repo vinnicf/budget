@@ -1,5 +1,6 @@
 from django import template
 from decimal import Decimal
+from django.contrib.humanize.templatetags.humanize import intcomma
 register = template.Library()
 
 @register.filter
@@ -42,3 +43,10 @@ def suppress_trailing_zeros(value):
 
     else:
         return value
+
+
+@register.filter(name='brazilian_currency')
+def brazilian_currency(value):
+    value = round(float(value), 2)  # Ensure the value has two decimal places
+    value = f"{value:,.2f}"  # Format with comma as the thousands separator
+    return value.replace(",", "X").replace(".", ",").replace("X", ".")
