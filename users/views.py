@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
-from .forms import CustomUserCreationForm, UserModalForm
+from django.views.generic import CreateView, TemplateView
+from .forms import RegistrationForm, UserModalForm
 from .models import CustomUser
 from .serializers import LoginSerializer
 from bootstrap_modal_forms.generic import BSModalCreateView
@@ -12,10 +12,22 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 
 
-class SignUpView(CreateView):
-    form_class = CustomUserCreationForm
-    success_url = reverse_lazy('home')
-    template_name = 'signup.html'
+def signup(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Redirect to a success page.
+            return redirect('registration_success')
+    else:
+        form = RegistrationForm()
+    return render(request, 'signup.html', {'form': form})
+
+    
+
+class PricingView(TemplateView):
+    template_name = 'users/pricing.html'
+
 
 class UserCreateView(BSModalCreateView):
     template_name = 'modalform.html'

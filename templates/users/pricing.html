@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cadastre se - Por Isso Estou Quebrado{% endblock %}
+
+{% block content %}
+<style>
+  .card {
+  /* Box shadow with a slight outward extension, giving a depth effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  /* Other styling can be included here as well */
+}
+
+/* Remove the inline styles from the container-fluid div and add a class if needed */
+.container-fluid {
+   /* This can be any color that suits the design */
+}
+
+.pricing-header {
+  text-align: center;
+  padding: 20px;
+  color: #333; /* Adjust the color to match your design */
+}
+
+.pricing-header .subheading {
+  font-size: 16px;
+  text-transform: uppercase;
+  color: #777; /* This is a lighter shade for the subheading */
+  margin-bottom: 5px; /* Adjust as needed */
+}
+
+.pricing-header .main-heading {
+  font-size: 36px; /* Adjust the size as needed */
+  font-weight: bold;
+  color: #333; /* Adjust the color to match your design */
+}
+
+.pricing-header .main-heading span {
+  color: #E53E3E; /* This color is for the accent text */
+}
+</style>
+
+<div class="pricing-header">
+  <h6 class="subheading">Planos & preços</h6>
+  <h2 class="main-heading">Selecione o melhor plano <span>para o seu negócio.</span></h2>
+</div>
+<div class="container-fluid">
+  <div class="container p-5">
+    <div class="row">
+      <div class="col-lg-6 col-md-12 mb-6">
+        <div class="card h-100 shadow-lg">
+          <div class="card-body">
+            <div class="text-center p-3">
+              <h5 class="card-title">Básico</h5>
+              <small>Pequenos Orçamentos</small>
+              <br><br>
+              <span class="h2">R$0,00</span>/mês
+              <br><br>
+            </div>
+            <p class="card-text">Para criação de pequenos orçamentos, de até 250 mil reais, utilizando tabela sinapi, e consulta de composições SINAPI </p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+              <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+            </svg> Elaboração de Orçamentos de até 50 itens e R$250.000,00</li>
+            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+              <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+            </svg> Consultas aos dados SINAPI</li>
+            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+              <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+            </svg>Relatório Analítico em XLSX com separação entre material e mão de obra</li>
+          </ul>
+          <div class="card-body text-center">
+            <button class="btn btn-outline-primary btn-lg" style="border-radius:30px">Selecionar</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12 mb-6">
+        <div class="card h-100 shadow-lg">
+          <div class="card-body">
+            <div class="text-center p-3">
+              <h5 class="card-title">Premium</h5>
+              <small>Pequenas e médias Empresas</small>
+              <br><br>
+              <span class="h2">R$49,90</span>/mês 
+              <br><br>
+            </div>
+            <p class="card-text">Para criação de orçamentos com valores e quantidade de itens ilimitados, e consultas ilimitadas aos dados SINAPI</p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+              <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+            </svg> Criação ilimitada de Orçamentos</li>
+            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+              <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+            </svg> Consultas ilimitadas à base SINAPI;</li>
+            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+              <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+            </svg> Relatório Analítico em XLSX com separação entre material e mão de obra</li>
+          </ul>
+          <div class="card-body text-center">
+            <button class="btn btn-outline-primary btn-lg" style="border-radius:30px">Selecionar</button>
+          </div>
+        </div>
+      </div>
+
+    </div>    
+  </div>
+
+{% endblock %}

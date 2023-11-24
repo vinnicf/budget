@@ -58,7 +58,7 @@
                 <td>{{ comp_comp.child_composition.comp_cost|brazilian_currency }}</td>
                 <td>{{ comp_comp.quantity|suppress_trailing_zeros }}</td>
                 <td>{{ comp_comp.child_composition.unit }}</td>
-                <td>{{ comp_comp.quantity|multiply:comp_comp.child_composition.comp_cost|brazilian_currency }}</td>
+                <td>{{ comp_comp.quantity|multiplymoney:comp_comp.child_composition.comp_cost|brazilian_currency }}</td>
             </tr>
             {% endfor %}
         

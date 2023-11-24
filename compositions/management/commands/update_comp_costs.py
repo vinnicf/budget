@@ -18,6 +18,12 @@ class Command(BaseCommand):
         total = compositions.count()
         self.stdout.write(f"Starting the update process for compositions with codigo from {start_codigo} to {end_codigo} (total {total}).")
 
+     # Ask the user if they want to proceed
+        proceed = input("Do you want to proceed with the update? (yes/no): ")
+        if proceed.lower() != 'yes':
+            self.stdout.write(self.style.WARNING("Update process aborted."))
+            return
+
         sleep(5)
 
         for index, composition in enumerate(compositions, start=1):

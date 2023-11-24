@@ -1,5 +1,5 @@
 from django import template
-from decimal import Decimal
+from decimal import Decimal, ROUND_DOWN
 from django.contrib.humanize.templatetags.humanize import intcomma
 register = template.Library()
 
@@ -8,6 +8,15 @@ def multiply(value, arg):
     try:
         return float(value) * float(arg)
     except (ValueError, TypeError):
+        return 'N/A'
+
+
+@register.filter
+def multiplymoney(value, arg):
+    try:
+        result = Decimal(value) * Decimal(arg)
+        return result.quantize(Decimal('0.00'), rounding=ROUND_DOWN)
+    except (ValueError, TypeError, InvalidOperation):
         return 'N/A'
 
 

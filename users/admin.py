@@ -1,12 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .forms import CustomUserCreationForm, CustomUserChangeForm
+from .forms import RegistrationForm, CustomUserChangeForm
 from .models import CustomUser
 from django.utils.translation import gettext_lazy as _
 
 
 class CustomUserAdmin(UserAdmin):
-    add_form = CustomUserCreationForm
+    add_form = RegistrationForm
     form = CustomUserChangeForm
     list_display = ['username','id', 'age']
     model = CustomUser

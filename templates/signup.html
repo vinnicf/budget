@@ -1,26 +1,120 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load form_tags %}
 
-{% block title %}Cadastre se - Por Isso Estou Quebrado{% endblock %}
+{% block title %}Cadastre-se no Orcamentor{% endblock %}
 
 {% block content %}
 
+<style>
+  .card {
+  /* Box shadow with a slight outward extension, giving a depth effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  /* Other styling can be included here as well */
+}
 
-<div class="container container-login">
+/* Remove the inline styles from the container-fluid div and add a class if needed */
+.container-fluid {
+   /* This can be any color that suits the design */
+}
 
-  <h4 style="text-align:left">Seja Bem Vindo!</h4>
-  <p>Cria sua conta para salvar na sua lista de desejos</p>
-  <form method="post">
-    {% csrf_token %}
+.pricing-header {
+  text-align: center;
+  padding: 20px;
+  color: #333; /* Adjust the color to match your design */
+}
 
-    <div style="text-align:center">
+.pricing-header .subheading {
+  font-size: 16px;
+  text-transform: uppercase;
+  color: #777; /* This is a lighter shade for the subheading */
+  margin-bottom: 5px; /* Adjust as needed */
+}
 
-      <button class="btn btn-primary" type="submit">Cadastrar</button>
-    </div>
-  </form>
-  <br>
-  Já tem uma conta? <a href="#"><b>Entrar</b></a>
-  <br>
+.pricing-header .main-heading {
+  font-size: 36px; /* Adjust the size as needed */
+  font-weight: bold;
+  color: #333; /* Adjust the color to match your design */
+}
+
+.pricing-header .main-heading span {
+  color: #E53E3E; /* This color is for the accent text */
+}
+
+.form-select {
+    /* Custom styles for select dropdown */
+    display: block;
+    width: 100%;
+    padding: 0.375rem 1.75rem 0.375rem 0.75rem; /* Match Bootstrap's form-control padding */
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem; /* Match Bootstrap's form-control border radius */
+    appearance: none;
+    /* You can add a background image for the dropdown arrow */
+  }
+</style>
+
+<div class="pricing-header">
+ 
+  <h3 class="main-heading">Criar uma conta</h3>
+    <h4 class="subheading">O Orcamentor pode ser usado gratuitamente</h6>
 </div>
-
+<div class="container-fluid">
+  <div class="container p-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-8 mb-6">
+        <div class="card h-100 shadow-lg">
+          <div class="card-body">
+           
+            <form method="post">
+              {% csrf_token %}
+              <div class="form-group mb-3">
+                {{ form.full_name.label_tag }}
+                {{ form.full_name|add_class:"form-control" }}
+                {% if form.full_name.errors %}
+                  <div class="alert alert-danger">{{ form.full_name.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="form-group mb-3">
+                {{ form.email.label_tag }}
+                {{ form.email|add_class:"form-control" }}
+                {% if form.email.errors %}
+                  <div class="alert alert-danger">{{ form.email.errors }}</div>
+                {% endif %}
+              </div>
+              
+              <div class="form-group mb-3">
+                {{ form.state.label_tag }}
+                {{ form.state|add_class:"form-select" }}
+                {% if form.state.errors %}
+                  <div class="alert alert-danger">{{ form.state.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="form-group mb-3">
+                {{ form.password1.label_tag }}
+                {{ form.password1|add_class:"form-control" }}
+                {% if form.password1.errors %}
+                  <div class="alert alert-danger">{{ form.password1.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="form-group mb-3">
+                {{ form.password2.label_tag }}
+                {{ form.password2|add_class:"form-control" }}
+                {% if form.password2.errors %}
+                  <div class="alert alert-danger">{{ form.password2.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>    
+  </div>
+</div>
 {% endblock %}

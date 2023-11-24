@@ -51,6 +51,7 @@ class Insumo(models.Model):
     name = models.CharField(max_length=200)
     unit = models.CharField(max_length=50)
     currentcost = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    inativo = models.BooleanField(default=False) 
     insumo_type = models.CharField(
         max_length=10,
         choices=TYPE_CHOICES,
@@ -113,8 +114,6 @@ class Composition(models.Model):
 
         # Calculate cost for insumos in this composition
         for comp_insumo in self.compositioninsumo_set.all():
-            print(f"Checking insumo: {comp_insumo.insumo.codigo}")
-            print(f"Filtering cost_history with desonerado value: {desonerado}")
             cost_history = CostHistory.objects.filter(
                 insumo=comp_insumo.insumo,
                 state=state,
@@ -133,8 +132,6 @@ class Composition(models.Model):
 
             else:
                 print(f"No cost history found for insumo: {comp_insumo.insumo.codigo}")
-            
-            print(f"Quantity for insumo {comp_insumo.insumo.codigo}: {comp_insumo.quantity}")
 
         # Calculate cost for child compositions
         for comp_comp in self.compositionchild_set.all():
