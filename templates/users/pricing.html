@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Cadastre se - Por Isso Estou Quebrado{% endblock %}
+{% block title %}Planos - Orcamentor{% endblock %}
 
 {% block content %}
 <style>
@@ -71,7 +71,7 @@
             </svg>Relatório Analítico em XLSX com separação entre material e mão de obra</li>
           </ul>
           <div class="card-body text-center">
-            <button class="btn btn-outline-primary btn-lg" style="border-radius:30px">Selecionar</button>
+            <a href="{% url 'users:signup' %}"><button class="btn btn-outline-primary btn-lg" style="border-radius:30px">Selecionar</button></a>
           </div>
         </div>
       </div>
@@ -99,7 +99,7 @@
             </svg> Relatório Analítico em XLSX com separação entre material e mão de obra</li>
           </ul>
           <div class="card-body text-center">
-            <button class="btn btn-outline-primary btn-lg" style="border-radius:30px">Selecionar</button>
+            <a href="{% url 'users:signup' %}"><button class="btn btn-outline-primary btn-lg" style="border-radius:30px">Selecionar</button></a>
           </div>
         </div>
       </div>

@@ -57,6 +57,26 @@
   }
 </style>
 
+
+<script>
+  function formatPhoneNumber(value) {
+      if (!value) return value;
+      const phoneNumber = value.replace(/[^\d]/g, '');
+      const phoneNumberLength = phoneNumber.length;
+      if (phoneNumberLength < 4) return phoneNumber;
+      if (phoneNumberLength < 7) {
+          return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(2)}`;
+      }
+      return `(${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(2, 7)}-${phoneNumber.slice(7, 11)}`;
+  }
+  
+  function onPhoneInputChange(event) {
+      const input = event.target;
+      const formatted = formatPhoneNumber(input.value);
+      input.value = formatted;
+  }
+  </script>
+  
 <div class="pricing-header">
  
   <h3 class="main-heading">Criar uma conta</h3>
@@ -72,12 +92,21 @@
             <form method="post">
               {% csrf_token %}
               <div class="form-group mb-3">
-                {{ form.full_name.label_tag }}
-                {{ form.full_name|add_class:"form-control" }}
-                {% if form.full_name.errors %}
-                  <div class="alert alert-danger">{{ form.full_name.errors }}</div>
+                {{ form.first_name.label_tag }}
+                {{ form.first_name|add_class:"form-control" }}
+                {% if form.first_name.errors %}
+                  <div class="alert alert-danger">{{ form.first_name.errors }}</div>
                 {% endif %}
               </div>
+
+              <div class="form-group mb-3">
+                {{ form.last_name.label_tag }}
+                {{ form.last_name|add_class:"form-control" }}
+                {% if form.last_name.errors %}
+                  <div class="alert alert-danger">{{ form.last_name.errors }}</div>
+                {% endif %}
+              </div>
+
               <div class="form-group mb-3">
                 {{ form.email.label_tag }}
                 {{ form.email|add_class:"form-control" }}
@@ -85,6 +114,14 @@
                   <div class="alert alert-danger">{{ form.email.errors }}</div>
                 {% endif %}
               </div>
+
+              <div class="form-group mb-3">
+                {{ form.phone_number.label_tag }}
+                <input type="text" name="phone_number" id="id_phone_number" class="form-control" oninput="onPhoneInputChange(event)">
+                {% if form.phone_number.errors %}
+                    <div class="alert alert-danger">{{ form.phone_number.errors }}</div>
+                {% endif %}
+            </div>
               
               <div class="form-group mb-3">
                 {{ form.state.label_tag }}
@@ -93,6 +130,7 @@
                   <div class="alert alert-danger">{{ form.state.errors }}</div>
                 {% endif %}
               </div>
+
               <div class="form-group mb-3">
                 {{ form.password1.label_tag }}
                 {{ form.password1|add_class:"form-control" }}
@@ -100,6 +138,7 @@
                   <div class="alert alert-danger">{{ form.password1.errors }}</div>
                 {% endif %}
               </div>
+
               <div class="form-group mb-3">
                 {{ form.password2.label_tag }}
                 {{ form.password2|add_class:"form-control" }}

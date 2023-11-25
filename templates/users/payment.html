@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Pagamento{% endblock %}
+{% block extra_css %} <script src="https://js.stripe.com/v3/"></script> {% endblock %}
+{% block content %}
+
+
+<form id="payment-form">
+    <div id="card-element">
+      <!-- Elements will create input elements here -->
+    </div>
+    <button id="submit-button">Pay</button>
+</form>
+
+<script>
+    var stripe = Stripe('{{ STRIPE_PUBLISHABLE_KEY }}');
+    var elements = stripe.elements();
+    var card = elements.create('card');
+    card.mount('#card-element');
+
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        stripe.confirmCardPayment('{{ client_secret }}', {
+            payment_method: {
+                card: card,
+            }
+        }).then(function(result) {
+            if (result.error) {
+                // Display error.message in your UI
+            } else {
+                if (result.paymentIntent.status === 'succeeded') {
+                    // Payment succeeded, navigate to a success page
+                    window.location.href = "/payment-success";
+                }
+            }
+        });
+    });
+</script>
+
+
+
+
+{% endblock %}

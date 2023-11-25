@@ -9,21 +9,62 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
+from django.conf import settings
+from django.http import JsonResponse
 from rest_framework.authtoken.models import Token
+import stripe
+from allauth.account.models import EmailAddress
+from allauth.account.utils import send_email_confirmation
+
+
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 def signup(request):
+    upgrade = request.GET.get('upgrade', 'false') == 'true'
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+
+            # Trigger email confirmation
+            email, created = EmailAddress.objects.get_or_create(user=user, email=user.email)
+            email.verified = False
+            email.set_as_primary()
+            email.save()
+            send_email_confirmation(request, user, signup=True)
+
             # Redirect to a success page.
-            return redirect('registration_success')
+            return redirect('compositions:home')
+        else:
+            print(form.errors)  # Or log the errors somewhere
     else:
         form = RegistrationForm()
     return render(request, 'signup.html', {'form': form})
 
+
+
+def payment_view(request, user_id):
+    # You should fetch the actual amount and user details based on your application logic
+    try:
+        payment_intent = stripe.PaymentIntent.create(
+            amount=1000,  # Amount is in cents (1000 cents = 10 dollars/euros/etc)
+            currency='brl',
+            description='Your product description',
+            # verify user_id and associate it with the payment for your records
+        )
+
+    except stripe.error.StripeError as e:
+        # Handle Stripe errors
+        return render(request, 'payment_error.html', {'error': str(e)})
     
+    context = {
+        'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLISHABLE_KEY,
+        'client_secret': payment_intent.client_secret
+    }
+    return render(request, 'users/payment.html', context)
+
 
 class PricingView(TemplateView):
     template_name = 'users/pricing.html'

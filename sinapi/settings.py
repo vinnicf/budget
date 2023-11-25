@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
     'compositions',
     'rest_framework',
     'rest_framework.authtoken',
@@ -58,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = 'sinapi.urls'
@@ -81,6 +85,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'sinapi.wsgi.application'
 
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51O6c5RIEZ29y0tWFmem18vJ3uCJtottgwmlTkakLNlXCrDi1yIAkPvKBCfpc4wnsgHi6UqKuqe378sOFMFD9nZma003sYUfNB2'
+STRIPE_SECRET_KEY = 'sk_test_51O6c5RIEZ29y0tWFkfEdx8XPBacE5bGqyLZTMVruj57bL4EnaD9OwqHRJ2sGIjXTNtL4VCgj22jiwNX4wV3m2Fr600LnmJ85Dv'
+
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_REQUIRED = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
@@ -91,6 +104,8 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+SITE_ID = 1
 
 
 # Database

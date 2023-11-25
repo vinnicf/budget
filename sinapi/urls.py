@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/', include('compositions.apiurls')),  # DRF endpoints
     path('budget/', include('orcamentos.urls')),
     path('app/', views.ReactAppView.as_view(), name='react_app'),
+    path('accounts/', include('allauth.urls')),
     path('usuario/', include ('users.urls')),
     path('politica-de-privacidade/', views.privacy_policy, name='privacy_policy'),
     path('termos-de-uso/', views.terms_and_conditions, name='terms_and_conditions'),

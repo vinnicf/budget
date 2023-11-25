@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 class CustomUserAdmin(UserAdmin):
     add_form = RegistrationForm
     form = CustomUserChangeForm
-    list_display = ['username','id', 'age']
+    list_display = ['id', 'age']
     model = CustomUser
 
      # Add new fieldsets for custom fields
@@ -21,10 +21,10 @@ class CustomUserAdmin(UserAdmin):
         (_('Membership Status'), {'fields': ('is_standard', 'is_premium')}),
     )
     
-    # Make sure to include your custom fields in list_display if you want them listed in the admin list view
-    list_display = ['username', 'email', 'age', 'is_standard', 'is_premium']
+    # Custom fields in list_display for them to be listed in the admin list view
+    list_display = [ 'email', 'age', 'is_standard', 'is_premium']
     
-    # And also in list_filter if you want to be able to filter by these fields
+    # Filter by these fields
     list_filter = UserAdmin.list_filter + ('is_standard', 'is_premium')
 
 admin.site.register(CustomUser, CustomUserAdmin)

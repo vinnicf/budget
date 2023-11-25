@@ -40,8 +40,8 @@ BRAZILIAN_STATES_CHOICES = [
 
 
 class RegistrationForm(forms.ModelForm):
-    full_name = forms.CharField(label='Nome completo', max_length=100)
-    email = forms.EmailField(label='Email')
+
+    email = forms.EmailField(label='Email', required=True)
     phone_regex = RegexValidator(regex=r'^\(\d{2}\) \d{4,5}-\d{4}$', message="Phone number must be entered in the format: '(99) 99999-9999'. Up to 15 digits allowed.")
     phone_number = forms.CharField(validators=[phone_regex], max_length=17, label='Telefone')  # validators should be a list
     state = forms.ChoiceField(choices=BRAZILIAN_STATES_CHOICES, label='Selecione seu Estado')
@@ -49,7 +49,7 @@ class RegistrationForm(forms.ModelForm):
     password2 = forms.CharField(widget=forms.PasswordInput, label='Confirme a senha')
     class Meta:
         model = CustomUser
-        fields = ('full_name', 'email', 'phone_number', 'state', 'password1', 'password2')
+        fields = ('first_name','last_name', 'email', 'phone_number', 'state', 'password1', 'password2')
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -59,7 +59,11 @@ class RegistrationForm(forms.ModelForm):
         return password2
 
     def save(self, commit=True):
-        user = super(RegistrationForm, self).save(commit=False)
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
+        user.username = self.cleaned_data['email']  # Set username to email
+        user.phone_number = self.cleaned_data['phone_number']
+        user.state = self.cleaned_data['state']
         user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()
@@ -76,4 +80,4 @@ class CustomUserChangeForm(UserChangeForm):
 class UserModalForm(BSModalModelForm):
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'password']
+        fields = ['email', 'password']
