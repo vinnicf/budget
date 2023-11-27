@@ -91,8 +91,15 @@ STRIPE_SECRET_KEY = 'sk_test_51O6c5RIEZ29y0tWFkfEdx8XPBacE5bGqyLZTMVruj57bL4EnaD
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_REQUIRED = True
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+SENDGRID_API_KEY = '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'
 
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'  # Literally the string 'apikey'
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'orcamentorapp@gmail.com'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [

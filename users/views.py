@@ -46,24 +46,26 @@ def signup(request):
 
 
 def payment_view(request, user_id):
-    # You should fetch the actual amount and user details based on your application logic
+    # Verify the user_id and fetch necessary details based on your application logic
+
     try:
-        payment_intent = stripe.PaymentIntent.create(
-            amount=1000,  # Amount is in cents (1000 cents = 10 dollars/euros/etc)
-            currency='brl',
-            description='Your product description',
-            # verify user_id and associate it with the payment for your records
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price': 'price_1OGhj8IEZ29y0tWF3phxYcxn',  # Your price ID
+                'quantity': 1,
+            }],
+            mode='payment',
+            success_url=request.build_absolute_uri('/success/'),  # URL to redirect to on successful payment
+            cancel_url=request.build_absolute_uri('/cancel/'),  # URL to redirect to on cancellation
         )
+
+        # Redirect to Stripe Checkout
+        return redirect(checkout_session.url)
 
     except stripe.error.StripeError as e:
         # Handle Stripe errors
-        return render(request, 'payment_error.html', {'error': str(e)})
-    
-    context = {
-        'STRIPE_PUBLISHABLE_KEY': settings.STRIPE_PUBLISHABLE_KEY,
-        'client_secret': payment_intent.client_secret
-    }
-    return render(request, 'users/payment.html', context)
+        return render(request, 'users/payment_error.html', {'error': str(e)})
 
 
 class PricingView(TemplateView):
@@ -88,5 +90,7 @@ class LoginAPIView(APIView):
         return Response({
             'token': token.key,
             'user_id': user.pk,
-            'username': user.username
+            'username': user.username,
+            'first_name': user.first_name,
+            'last_name': user.last_name
         }, status=status.HTTP_200_OK)
