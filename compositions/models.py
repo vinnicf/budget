@@ -2,6 +2,7 @@ from django.db import models
 from calendar import monthrange
 import math
 from decimal import Decimal, ROUND_DOWN
+from datetime import datetime
 
 class State(models.Model):
     name = models.CharField(max_length=100)
@@ -100,13 +101,17 @@ class Composition(models.Model):
     ct_complementares = models.TextField(null=True, blank=True)
 
   
-    def calculate_cost(self, state=None, desonerado=None):
+    def calculate_cost(self, state=None, desonerado=None, year_month=None):
         from compositions.models import CostHistory
     
         print("In Calculate Cost")
         total_cost = Decimal('0.00')
         material_cost = Decimal('0.00')
         mo_cost = Decimal('0.00')
+
+        if not year_month:
+            print("No month_year provided")
+            return total_cost, mo_cost    
 
         if desonerado not in [CostHistory.DESONERADO, CostHistory.NAO_DESONERADO]:
             print(f"Invalid desonerado value: {desonerado}")
@@ -117,8 +122,9 @@ class Composition(models.Model):
             cost_history = CostHistory.objects.filter(
                 insumo=comp_insumo.insumo,
                 state=state,
-                cost_type=desonerado
-            ).last()
+                cost_type=desonerado,
+                year_month=year_month
+            ).first()
 
             if cost_history:
                 individual_cost = Decimal(cost_history.cost) * Decimal(str(comp_insumo.quantity))
@@ -135,7 +141,7 @@ class Composition(models.Model):
 
         # Calculate cost for child compositions
         for comp_comp in self.compositionchild_set.all():
-            child_composition_cost, child_material_cost, child_mo_cost = comp_comp.child_composition.calculate_cost(state, desonerado)
+            child_composition_cost, child_material_cost, child_mo_cost = comp_comp.child_composition.calculate_cost(state, desonerado, year_month)
             child_composition_total_cost = child_composition_cost * comp_comp.quantity
             child_composition_total_cost = child_composition_total_cost.quantize(Decimal('0.00'), rounding=ROUND_DOWN)
             total_cost += child_composition_total_cost
@@ -204,6 +210,7 @@ class CostHistory(models.Model):
     insumo = models.ForeignKey(Insumo, on_delete=models.CASCADE)
     state = models.ForeignKey(State, on_delete=models.CASCADE)
     month_year = models.DateField()
+    year_month = models.CharField(max_length=6, null=True)
     cost = models.DecimalField(max_digits=10, decimal_places=2)
     cost_type = models.CharField(
         max_length=15, 

@@ -43,20 +43,22 @@ class CompositionDetailSerializer(serializers.ModelSerializer):
         fields = ('id', 'codigo', 'name', 'unit', 'comp_cost', 'compositioninsumo_set', 'compositionchild_set', 'total_cost', 'material_cost', 'mo_cost')
         depth = 1
 
+    def _calculate_costs_once(self, obj):
+        if not hasattr(obj, '_cached_costs'):
+            state = self.context.get('state', None)
+            desonerado = self.context.get('desonerado', None)
+            year_month = self.context.get('year_month', None)  # Get the date from the context
+            obj._cached_costs = obj.calculate_cost(state=state, desonerado=desonerado, year_month=year_month)
+        return obj._cached_costs
+
     def get_total_cost(self, obj):
-        state = self.context.get('state', None)
-        desonerado = self.context.get('desonerado', None)
-        return obj.calculate_cost(state=state, desonerado=desonerado)[0]
+        return self._calculate_costs_once(obj)[0]
         
     def get_material_cost(self, obj):
-        state = self.context.get('state', None)
-        desonerado = self.context.get('desonerado', None)
-        return obj.calculate_cost(state=state, desonerado=desonerado)[1]
+        return self._calculate_costs_once(obj)[1]
 
     def get_mo_cost(self, obj):
-        state = self.context.get('state', None)
-        desonerado = self.context.get('desonerado', None)
-        return obj.calculate_cost(state=state, desonerado=desonerado)[2]
+       return self._calculate_costs_once(obj)[2]
 
 
 

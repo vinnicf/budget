@@ -77,6 +77,18 @@ class CustomUserChangeForm(UserChangeForm):
         fields = UserChangeForm.Meta.fields
 
 
+
+class AdminRegistrationForm(UserCreationForm):
+    class Meta:
+        model = CustomUser
+        fields = ('email',)  # Include only email here
+
+    def clean_email(self):
+        # Add any custom validation for email if necessary
+        email = self.cleaned_data['email']
+        return email
+
+
 class UserModalForm(BSModalModelForm):
     class Meta:
         model = CustomUser

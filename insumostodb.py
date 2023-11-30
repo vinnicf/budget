@@ -14,8 +14,8 @@ from compositions.models import Insumo, CostHistory, State  # Importing the mode
 with open('data.json', 'r') as f:
     data = json.load(f)
 
-# Define the date for August 2023
-month_year = date(2023, 9, 1)
+# Define the date for October 2023
+month_year = date(2023, 10, 1)
 
 # Atomic database transaction
 with transaction.atomic():

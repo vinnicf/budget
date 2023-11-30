@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'compositions',
     'rest_framework',
     'rest_framework.authtoken',
@@ -92,13 +93,12 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_REQUIRED = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-SENDGRID_API_KEY = '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'
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey'  # Literally the string 'apikey'
-EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+EMAIL_HOST = 'email-smtp.us-east-2.amazonaws.com'  
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'AKIAZ6I3GVD7CCAVOVN5'
+EMAIL_HOST_PASSWORD = 'BHbBx9yvp1B4rBR+MIo8WIp+Jd7Fp6niA9NVH9Ziodqu'
 DEFAULT_FROM_EMAIL = 'orcamentorapp@gmail.com'
 
 REST_FRAMEWORK = {

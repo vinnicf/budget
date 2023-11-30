@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.views.generic import ListView
 from collections import defaultdict
+from datetime import datetime
 
 
 
@@ -297,15 +298,19 @@ class CompositionCostView(APIView):
         }
         return context
 
-    def get(self, request, codigo, state_name, desonerado):
+    def get(self, request, codigo, state_name, desonerado, year_month):
         print(f"State in API view: {state_name}")  # Debugging line
         print(f"Desonerado in API view: {desonerado}")  # Debugging line
+        print(f"Date in API view: {year_month}")  # Debugging line
+
+    
+
         # Get the State object using state_name
         state = get_object_or_404(State, name=state_name)
 
         composition = get_object_or_404(Composition, codigo=codigo)
         serializer_context = self.get_serializer_context()
-        serializer = CompositionDetailSerializer(composition, context={'state': state, 'desonerado': desonerado})
+        serializer = CompositionDetailSerializer(composition, context={'state': state, 'desonerado': desonerado, 'year_month': year_month})
         return Response(serializer.data)
 
 

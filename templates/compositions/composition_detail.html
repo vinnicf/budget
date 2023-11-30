@@ -11,7 +11,6 @@
     <div class="jumbotron">
         <h4>Composição SINAPI {{ composition.codigo }}</h4> <hr>
         <h1 class="display-4">{{ composition.name }} ({{ composition.codigo }})</h1>
-        
 
  
     </div>
@@ -73,9 +72,11 @@
                 <td>{{ insumo_entry.quantity|multiply:insumo_entry.insumo.currentcost|brazilian_currency }}</td>
             </tr>
             {% endfor %}
-        </tbody>
-        
+              </tbody>
+        <tfoot></tfoot>
     </table>
+    <small class="text-muted">Os custos listados são uma média nacional. Para orçamentos, consulte o custo no seu estado em <a href="https://orcamentor.com/usuario/planos/">nosso no aplicativo</a></small>
+     
 
     <h3 class="mt-5">Caderno Técnico:</h3>
     <div class="card mb-4 shadow"> <!-- Added shadow and margin-bottom -->
@@ -136,7 +137,7 @@
                 <p class="card-text">{{ composition.ct_complementares|linebreaks }}</p>
             </div>
         </div>
-         
+
 
 </div>
 {% endblock %}

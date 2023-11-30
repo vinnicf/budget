@@ -9,7 +9,7 @@
         <!-- Column for current cost -->
         <div class="col-md-4">
             <h2 style="">R$ {{ insumo.currentcost|floatformat:2 }}</h2>
-            <small class="text-muted">Custo por {{ insumo.unit }}, referente ao estado de São Paulo para o mês de outubro de 2023</small>
+            <small class="text-muted">Custo médio nacional por {{ insumo.unit }}, para o mês de outubro de 2023 </small>
         </div>
 
         <!-- Column for other details -->
@@ -51,6 +51,7 @@
         </tr>
         {% endfor %}
     </tbody>
+    
 </table>
 
 </div>

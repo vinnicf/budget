@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Orcamentor - Orçamentos de Obra Planilha SINAPI{% endblock %}
+{% block head_meta %}<meta name="google-site-verification" content="m4jRS1fiZJPwGQHW1AYIsGT7lqpfxHRefa5tAMv0bGM" />{% endblock %}
+{% block content %}
+
+<div class="container mt-5">
+
+    <!-- Header Section -->
+    <div class="jumbotron">
+        <h1 class="display-4">Orcamentor</h1>
+        <p class="lead">Orçamentos de Obra com Planilhas SINAPI</p>
+    </div>
+
+    <!-- Introduction Section -->
+    <div class="card mt-4">
+        <div class="card-body">
+            <p>
+                Bem-vindo ao nosso site! Estamos em pleno desenvolvimento de um aplicativo voltado para orçamentos de obra, utilizando a base de dados do SINAPI. Nosso objetivo é oferecer uma ferramenta intuitiva e eficaz para profissionais da construção civil, engenheiros, arquitetos e qualquer pessoa interessada em realizar orçamentos precisos e confiáveis. Acreditamos que a tecnologia, aliada à expertise profissional, pode transformar o modo como os orçamentos são realizados no Brasil. Fique atento às novidades e, em breve, traremos mais funcionalidades para otimizar ainda mais o seu trabalho.
+            </p>
+        </div>
+    </div>
+
+    <!-- Featured Sections -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Composições</h3>
+                </div>
+                <div class="card-body">
+                    <p>Explore as diferentes composições da base de dados SINAPI.</p>
+                    <a href="{% url 'compositions:classes_list' %}" class="btn btn-primary">Ver Composições</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Insumos</h3>
+                </div>
+                <div class="card-body">
+                    <p>Conheça diferentes insumos da base de dados Sinapi.</p>
+                    <a href="{% url 'compositions:insumo_list' %}" class="btn btn-primary">Ver Insumos</a>
+                </div>
+            </div>   
+</div>
+</div>
+
+ 
+
+</div>
+{% endblock %}

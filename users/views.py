@@ -14,7 +14,9 @@ from django.http import JsonResponse
 from rest_framework.authtoken.models import Token
 import stripe
 from allauth.account.models import EmailAddress
-from allauth.account.utils import send_email_confirmation
+from allauth.account.utils import send_email_confirmation, complete_signup
+from allauth.account import app_settings
+from allauth.account.views import ConfirmEmailView
 
 
 
@@ -36,12 +38,16 @@ def signup(request):
             send_email_confirmation(request, user, signup=True)
 
             # Redirect to a success page.
-            return redirect('compositions:home')
+            return redirect('users:thank_you')
         else:
             print(form.errors)  # Or log the errors somewhere
     else:
         form = RegistrationForm()
     return render(request, 'signup.html', {'form': form})
+
+
+def thank_you(request):
+    return render(request, 'users/thankyou.html')
 
 
 
@@ -66,6 +72,28 @@ def payment_view(request, user_id):
     except stripe.error.StripeError as e:
         # Handle Stripe errors
         return render(request, 'users/payment_error.html', {'error': str(e)})
+
+
+
+class CustomEmailConfirmView(ConfirmEmailView):
+    def get(self, *args, **kwargs):
+        response = super(CustomEmailConfirmView, self).get(*args, **kwargs)
+
+        # Get the email confirmation object
+        self.object = confirmation = self.get_object()
+        # Confirm the email address
+        confirmation.confirm(self.request)
+        # Complete the signup process
+        complete_signup(self.request, confirmation.email_address.user, 
+                        app_settings.EMAIL_VERIFICATION, None)
+
+        # Redirect to 'thank-you' page
+        return redirect('users:thank_you_email')
+
+
+def thank_you_email(request):
+    return render(request, 'users/thank_you_email.html')
+
 
 
 class PricingView(TemplateView):
