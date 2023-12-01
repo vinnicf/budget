@@ -346,22 +346,23 @@ class InsumoCostView(APIView):
     def get_queryset(self):
         return Insumo.objects.all()
 
-    def get(self, request, codigo, state_name, desonerado):
+    def get(self, request, codigo, state_name, desonerado, year_month):
         # Get the corresponding Insumo and State objects
         insumo = get_object_or_404(Insumo, codigo=codigo)
         state = get_object_or_404(State, name=state_name)
 
         # Get the latest cost
         try:
-            latest_cost = CostHistory.objects.filter(
+            cost = CostHistory.objects.get(
                 insumo=insumo,
                 state=state,
-                cost_type=desonerado
-            ).latest('month_year')
+                cost_type=desonerado,
+                year_month=year_month
+            )
         except CostHistory.DoesNotExist:
             return Response({"error": "Cost history not found"}, status=status.HTTP_404_NOT_FOUND)
 
         # Serialize the data
-        serializer = CostHistorySerializer(latest_cost)
+        serializer = CostHistorySerializer(cost)
 
         return Response(serializer.data)

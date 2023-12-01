@@ -76,5 +76,5 @@ class CostHistorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CostHistory
-        fields = ('month_year', 'cost', 'cost_type', 'insumo_data')
+        fields = ('year_month', 'cost', 'cost_type', 'insumo_data')
 

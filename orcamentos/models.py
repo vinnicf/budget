@@ -14,6 +14,7 @@ class Orcamento(models.Model):
     bdi = models.DecimalField(max_digits=5, decimal_places=2)
     desonerado = models.CharField(max_length=15, choices=DESONERADO_CHOICES, default='nao_desonerado')
     state = models.CharField(max_length=2)
+    datasinapi = models.CharField(max_length=6, null=True)
     
     # A string representation for the model
     def __str__(self):
