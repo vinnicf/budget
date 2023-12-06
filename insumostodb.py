@@ -3,6 +3,7 @@ import json
 import django
 from django.db import transaction, IntegrityError
 from datetime import date
+import time 
 
 # Set up the Django environment
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sinapi.settings')
@@ -16,12 +17,22 @@ with open('data.json', 'r') as f:
 
 # Define the date for October 2023
 month_year = date(2023, 10, 1)
+year_month = "202310"
 
 # Atomic database transaction
 with transaction.atomic():
+    counter = 0  # Initialize a counter
     for codigo, state_data in data.items():
+        counter += 1  # Increment the counter
+
+        # Pause every 100 instances
+        if counter % 500 == 0:
+            print("Pausing for 3 seconds...")
+            time.sleep(5)  # Pause for 3 seconds
+
         # Converting to str and removing leading/trailing whitespace
         codigo = str(codigo).strip()
+
 
         # Check if Insumo with this 'codigo' exists
         try:
@@ -45,10 +56,10 @@ with transaction.atomic():
                     insumo=insumo_instance,
                     state=state_instance,
                     month_year=month_year,
+                    year_month=year_month,
                     cost_type=cost_type,
                     defaults={'cost': cost}
                 )
-                print(f"Updated CostHistory for {cost_history_instance}")
             except IntegrityError as e:
                 print(f"Skipped update_or_create for Insumo with codigo {codigo} due to IntegrityError: {e}")
                 continue  # Skip to the next item

@@ -269,8 +269,6 @@ class SearchCompositionView(APIView):
 
 
 
-
-
 class CompositionDetailView(APIView):
 
     queryset = Composition.objects.all()
@@ -283,7 +281,6 @@ class CompositionDetailView(APIView):
                 return Response(serializer.data)
         else:
                 return Response({"error": "Composição não encontrada"}, status=404)
-
 
 
 
@@ -302,8 +299,6 @@ class CompositionCostView(APIView):
         print(f"State in API view: {state_name}")  # Debugging line
         print(f"Desonerado in API view: {desonerado}")  # Debugging line
         print(f"Date in API view: {year_month}")  # Debugging line
-
-    
 
         # Get the State object using state_name
         state = get_object_or_404(State, name=state_name)
@@ -325,11 +320,11 @@ class SearchInsumoView(APIView):
         name = request.GET.get('name')
         
         if codigo and codigo != "[object Object]":
-            insumos = Insumo.objects.filter(codigo=codigo)
+            insumos = Insumo.objects.filter(codigo=codigo, inativo=False)
 
         # Handle search by name
         elif name:
-            insumos = get_relevant_queryset(Insumo, name)[:30]
+            insumos = get_relevant_queryset(Insumo, name).filter(inativo=False)[:30]
             
 
         else:
@@ -337,8 +332,6 @@ class SearchInsumoView(APIView):
         
         serializer = InsumoSerializer(insumos, many=True)
         return Response(serializer.data)
-
-
 
 
 class InsumoCostView(APIView):

@@ -50,6 +50,10 @@ class RegistrationForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ('first_name','last_name', 'email', 'phone_number', 'state', 'password1', 'password2')
+        labels = {
+            'first_name': 'Nome',
+            'last_name': 'Sobrenome',
+        }
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")

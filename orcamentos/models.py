@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import CustomUser
 
+
 class Orcamento(models.Model):
 
     DESONERADO_CHOICES = [

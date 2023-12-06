@@ -66,7 +66,7 @@
                 <td>I</td>
                 <td><a href="{% url 'compositions:insumo_detail' insumo_entry.insumo.codigo %}">{{ insumo_entry.insumo.codigo }}</a></td>
                 <td><a href="{% url 'compositions:insumo_detail' insumo_entry.insumo.codigo %}">{{ insumo_entry.insumo.name }}</a></td>
-                <td>{{ insumo_entry.insumo.currentcost }}</td>
+                <td>{{ insumo_entry.insumo.currentcost|brazilian_currency }}</td>
                 <td>{{ insumo_entry.quantity|suppress_trailing_zeros }}</td>
                 <td>{{ insumo_entry.insumo.unit }}</td>    
                 <td>{{ insumo_entry.quantity|multiply:insumo_entry.insumo.currentcost|brazilian_currency }}</td>

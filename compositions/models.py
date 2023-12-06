@@ -129,7 +129,6 @@ class Composition(models.Model):
             if cost_history:
                 individual_cost = Decimal(cost_history.cost) * Decimal(str(comp_insumo.quantity))
                 individual_cost = individual_cost.quantize(Decimal('0.00'), rounding=ROUND_DOWN)  # Round down to 2 decimal places
-                print(f"Custo calculado total para o insumo {comp_insumo.insumo.codigo}: {individual_cost}")
                 total_cost += individual_cost
 
                 # Categorize costs based on the type of Insumo
@@ -147,8 +146,6 @@ class Composition(models.Model):
             total_cost += child_composition_total_cost
             mo_cost += (child_mo_cost * comp_comp.quantity).quantize(Decimal('0.00'), rounding=ROUND_DOWN)
 
-        print(f"Total cost: {total_cost}")
-        print(f"MO cost: {mo_cost}")
 
         total_cost = total_cost.quantize(Decimal('0.00'), rounding=ROUND_DOWN)
         mo_cost = mo_cost.quantize(Decimal('0.00'), rounding=ROUND_DOWN)

@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
-{% block title %}  {{ insumo.name|title }} ({{ insumo.codigo }}){% endblock %}
-{% block head_meta %}<meta name="description" content="Insumo SINAPI {{ insumo.codigo }} - {{ insumo.detaileddescription|truncatechars:160 }}">{% endblock %}
+{% load math_filters %}
+
+{% block title %} {{ insumo.name|title }} ({{ insumo.codigo }}){% endblock %}
+{% block head_meta %}
+<meta name="description"
+    content="Insumo SINAPI {{ insumo.codigo }} - {{ insumo.detaileddescription|truncatechars:160 }}">{% endblock %}
 {% block content %}
 <div class="container mt-5">
     <h1 class="display-4">{{ insumo.name }}</h1>
@@ -8,7 +12,7 @@
     <div class="row">
         <!-- Column for current cost -->
         <div class="col-md-4">
-            <h2 style="">R$ {{ insumo.currentcost|floatformat:2 }}</h2>
+            <h2>R$ {{ insumo.currentcost|brazilian_currency }}</h2>
             <small class="text-muted">Custo médio nacional por {{ insumo.unit }}, para o mês de outubro de 2023 </small>
         </div>
 
@@ -30,29 +34,31 @@
         <!-- Column for the detailed description -->
         <div class="col-md-6" style="white-space: pre-line;">
             {{ insumo.detaileddescription }}
-            
+
         </div>
     </div>
-<br>
+    <br>
     <h4>Composições SINAPI Que Utilizam Este Insumo</h4>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Codigo</th>
-            <th>Descrição</th>
-           
-        </tr>
-    </thead>
-    <tbody>
-        {% for comp_insumo in related_compositions %}
-        <tr>
-            <td><a href="{% url 'compositions:composition_detail' comp_insumo.composition.codigo %}">{{ comp_insumo.composition.codigo }}</a></td>
-            <td><a href="{% url 'compositions:composition_detail' comp_insumo.composition.codigo %}">{{ comp_insumo.composition.name }}</a></td>
-        </tr>
-        {% endfor %}
-    </tbody>
-    
-</table>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Codigo</th>
+                <th>Descrição</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for comp_insumo in related_compositions %}
+            <tr>
+                <td><a href="{% url 'compositions:composition_detail' comp_insumo.composition.codigo %}">
+                    {{ comp_insumo.composition.codigo }}</a></td>
+                <td><a href="{% url 'compositions:composition_detail' comp_insumo.composition.codigo %}">
+                    {{ comp_insumo.composition.name }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
 
 </div>
 {% endblock %}

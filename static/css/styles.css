@@ -80,4 +80,8 @@ html, body {
     .display-4 {
         font-size: 1.5rem; /* Adjust the size as needed */
     }
+
+    .reduce-padding-sm {
+        padding: 0.1rem !important; /* Override padding for small screens */
+}
 }
