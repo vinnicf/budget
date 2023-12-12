@@ -6,45 +6,57 @@
 {% block content %}
 
 <!-- Header Section -->
-<div class="jumbotron">
-    <h1 class="display-4">Orcamentor</h1>
-    <p class="lead">Orçamentos de Obra com Planilhas SINAPI</p>
-</div>
-<div class="container col-xxl-8 px-4 py-5" bis_skin_checked="1">
+
+<div class="container col-xxl-8 px-4 py-5 " bis_skin_checked="1">
+<div class="conheca-orc">
+    <h1 class="display-5 fw-bold lh-1 mb-3">Faça orçamentos de obra profissionais</h1>
+    <p class="lead">Utilize nosso aplicativo para criar orçamentos de obras profissionais utilizando base de
+        dados SINAPI</p>
+        <div class="d-grid gap-2justify-content-md-start" bis_skin_checked="1">
+            <a href="https://orcamentor.com/usuario/planos/"><button type="button"
+                class="btn btn-primary btn-lg px-4 me-md-2 conheca-btn">Conheça gratuitamente
+                <img src="{% static 'svg/arrow-right.svg' %}" alt="Arrow" class="arrow-icon">
+            </button> </a>
+    </div>
+    </div>
+ 
+
+<div class="container col-xxl-8 px-4 py-5 bordered-container" bis_skin_checked="1">
     <div class="row flex-lg-row-reverse align-items-center g-5" bis_skin_checked="1">
         <div class="col-sm-8 col-lg-6" bis_skin_checked="1">
-            <img src="{% static 'images/home.png' %}" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes"
-                width="700" height="500" loading="lazy">
+            <img src="{% static 'images/screenshot1.png' %}" alt="App Screenshot" class="app-screenshot">
         </div>
         <div class="col-lg-6" bis_skin_checked="1">
-            <h1 class="display-5 fw-bold lh-1 mb-3">Faça orçamentos de obra profissionais</h1>
-            <p class="lead">Utilize nosso aplicativo para criar orçamentos de obras profissionais utilizando base de
-                dados SINAPI</p>
-            <div class="d-grid gap-2justify-content-md-start" bis_skin_checked="1">
-                <a href="https://orcamentor.com/usuario/signup/"><button type="button"
-                        class="btn btn-primary btn-lg px-4 me-md-2">Comece gratuitamente</button> </a>
-                <a href="https://orcamentor.com/usuario/planos/"><button type="button"
-                    class="btn btn-outline-secondary btn-lg px-4">Veja nossos planos</button> </a>
-            </div>
+            <h2 class="display-5 fw-bold lh-1 mb-3">Interface Intuitiva</h2>
+            <p class="lead">Aprenda a utilizar o app em alguns minutos e faça seus orçamentos rapidamente</p>
+   
         </div>
     </div>
 </div>
+
 <div class="container mt-5">
-    <!-- Hero Section -->
 
+</div>
     <!-- Introduction Section -->
-    <div class="card mt-4">
-        <div class="card-body">
-            <p>
-                Bem-vindo ao Orcamentor! Conheça a nossa ferramenta intuitiva e eficaz
-                para profissionais da construção civil, engenheiros, arquitetos e qualquer pessoa interessada em
-                realizar orçamentos precisos e confiáveis. Acreditamos que a tecnologia, aliada à expertise
-                profissional, pode transformar o modo como os orçamentos são realizados no Brasil. Fique atento às
-                novidades e, em breve, traremos mais funcionalidades para otimizar ainda mais o seu trabalho.
-            </p>
+  
+    <div class="testimonial">
+        <svg class="testimonial__quotes" fill="none" height="127" viewBox="0 0 155 127" width="155" xmlns="http://www.w3.org/2000/svg">
+            <path d="M34.6922 127C23.6788 127 15.1434 123.701 9.08606 117.104C3.02869 110.232 0 100.61 0 88.2403C0 76.145 2.61568 62.5379 7.84705 47.4188C13.3538 32.2998 20.6501 16.4935 29.7362 0H73.1015V2.47404C66.7688 13.4697 61.1244 23.9156 56.1684 33.8117C51.4877 43.4329 47.4953 52.5043 44.1913 61.026C52.176 62.6753 58.3711 66.3864 62.7764 72.1591C67.1818 77.9318 69.3845 85.2165 69.3845 94.013C69.3845 103.909 66.3558 111.881 60.2984 117.929C54.5164 123.976 45.981 127 34.6922 127ZM116.591 127C105.577 127 97.0419 123.701 90.9846 117.104C84.9272 110.232 81.8985 100.61 81.8985 88.2403C81.8985 76.145 84.5142 62.5379 89.7455 47.4188C95.2522 32.2998 102.549 16.4935 111.635 0H155V2.47404C148.667 13.4697 143.023 23.9156 138.067 33.8117C133.386 43.4329 129.394 52.5043 126.09 61.026C134.075 62.6753 140.27 66.3864 144.675 72.1591C149.08 77.9318 151.283 85.2165 151.283 94.013C151.283 103.909 148.254 111.881 142.197 117.929C136.415 123.976 127.879 127 116.591 127Z"></path>
+            </svg>
+        <div class="testimonial__content">
+          <blockquote class="testimonial__quote">O Orcamentor é uma ótima ferramenta para poupar tempo e agilizar nosso processo de criação de orçamentos de obra. Antes de utilizar a ferramenta, eu passava horas procurando as composições corretas e atualizando valores em planilhas.</blockquote>
+          <cite class="testimonial__source">
+            <strong class="testimonial__author">Luis Dias</strong>
+            <span class="testimonial__position">Engenheiro Civil</span>
+          </cite>
         </div>
-    </div>
+        <div class="testimonial__visual">
+          <img alt="Sean Gallagher" class="testimonial__avatar" loading="lazy" src="{% static 'images/luis-dias.jpg' %}">
+ 
+        </div>
+      </div>
 
+      
     <!-- Featured Sections -->
     <div class="row mt-4">
         <div class="col-md-6">

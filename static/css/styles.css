@@ -169,6 +169,149 @@ html, body {
     /* visibility: hidden; */
   }
   
+  .conheca-orc {
+    margin-bottom: 20px;
+  }
+
+.conheca-btn {
+    background-color: #0099ff; /* Lighter blue background */
+    border-radius: 25px; /* Rounder corners */
+    color: white; /* Ensuring text is white for visibility */
+    line-height: 24px;
+}
+
+.bordered-container {
+  background: #fff; /* Assuming you want a white background */
+  border: 1px solid #ddd; /* Light grey border */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Space inside the box */
+  padding-left: 0; /* Remove padding for smaller screens */
+  padding-right: 0; /* Remove padding for smaller screens */
+}
+
+
+.testimonial {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically on small screens */
+  align-items: center;
+  background-color: #f8f8f8;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  text-align: center; /* Center text for small screens */
+}
+
+.testimonial__quotes {
+  fill: #ccc;
+  margin-bottom: 15px; /* Space after the quote image on small screens */
+}
+
+.testimonial__content {
+  flex: 1;
+}
+
+.testimonial__quote {
+  font-style: normal;
+  color: #555;
+}
+
+.testimonial__author {
+  display: block;
+  font-weight: bold;
+  color: #333;
+}
+
+.testimonial__position {
+  display: block;
+  color: #666;
+  font-size: 0.85em;
+}
+
+.testimonial__visual {
+  display: flex;
+  flex-direction: row; /* Ensure the avatar and logo are in a row */
+  justify-content: center; /* Center them on small screens */
+  margin-top: 15px; /* Space above the visual part on small screens */
+}
+
+.testimonial__avatar {
+  border-radius: 50%;
+  width: 80px; /* Adjust size as necessary */
+  height: 80px; /* Adjust size as necessary */
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.testimonial__logo {
+  width: 40px; /* Adjust size as necessary */
+  height: 40px; /* Adjust size as necessary */
+}
+
+/* Larger screens */
+@media (min-width: 768px) {
+  .testimonial {
+    flex-direction: row; /* Side-by-side elements on larger screens */
+    align-items: flex-start;
+    text-align: left; /* Align text to the left on larger screens */
+  }
+
+  .testimonial__quotes {
+    margin-right: 15px;
+    margin-bottom: 0; /* Reset space below the quote image on larger screens */
+  }
+
+  .testimonial__visual {
+    flex-direction: column; /* Stack the avatar and logo vertically on larger screens */
+    justify-content: flex-start; /* Align to the start on larger screens */
+    margin-top: 0; /* Reset space above the visual part on larger screens */
+  }
+}
+
+
+.screenshot-parent {
+  display: flex;
+}
+
+.screenshot-container {
+  text-align: center; /* Center the image if needed */
+}
+
+.app-screenshot {
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Drop shadow */
+  width: 100%; /* Fill width */
+  height: auto; /* Maintain aspect ratio */
+  margin-left: auto; /* Center the image if needed */
+  margin-right: auto; /* Center the image if needed */
+}
+
+/* Medium screens (over 768px) */
+@media (min-width: 768px) {
+  .bordered-container {
+    padding-left: 15px; /* Add padding for larger screens */
+    padding-right: 15px; /* Add padding for larger screens */
+  }
+
+  .app-screenshot {
+    /* Limit the size of the image on larger screens */
+    max-width: 100%;
+    margin-left: 0; /* Reset margins for larger screens */
+    margin-right: 0; /* Reset margins for larger screens */
+  }
+}
+
+  
+.screenshot-title {
+  font-family: "General Sans", sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0px;
+  line-height: 40px;
+  
+  color: var(--token-f27137b4-9768-4a66-a2ef-c8166a01c1ef, rgb(12, 17, 29));
+}
 
 
 
@@ -179,6 +322,10 @@ html, body {
 }
 
 @media (max-width: 576px) {
+
+  #root {
+    padding: 0;
+  }
     .display-4 {
         font-size: 1.5rem; /* Adjust the size as needed */
     }
