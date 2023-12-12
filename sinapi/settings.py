@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'compositions',
     'rest_framework',
     'rest_framework.authtoken',
+    'django.contrib.sitemaps',
     'corsheaders',
     'orcamentos',
 ]
@@ -99,7 +100,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'AKIAZ6I3GVD7CCAVOVN5'
 EMAIL_HOST_PASSWORD = 'BHbBx9yvp1B4rBR+MIo8WIp+Jd7Fp6niA9NVH9Ziodqu'
-DEFAULT_FROM_EMAIL = 'orcamentorapp@gmail.com'
+DEFAULT_FROM_EMAIL = 'contato@orcamentor.com'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [

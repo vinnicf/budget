@@ -26,7 +26,7 @@ class CustomUserAdmin(UserAdmin):
     )
     
     # Custom fields in list_display for them to be listed in the admin list view
-    list_display = [ 'username', 'email', 'age', 'is_standard', 'is_premium']
+    list_display = [ 'username', 'email', 'age', 'is_standard', 'is_premium', 'phone_number']
     
     # Filter by these fields
     list_filter = UserAdmin.list_filter + ('is_standard', 'is_premium')

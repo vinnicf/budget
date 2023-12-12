@@ -69,6 +69,108 @@ html, body {
     font-size: 0.95rem;  /* Adjusting paragraph font size */
 }
 
+.fade-out-effect {
+    position: relative;
+    overflow: hidden;
+    max-height: 100px; /* Adjust based on how much text you want to show initially */
+    transition: max-height 0.5s ease;
+}
+
+.fade-out-effect::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px; /* Height of the fade effect */
+    background: linear-gradient(to bottom, transparent, white);
+}
+
+.expanded {
+    max-height: none;
+}
+
+
+/* Expandable */
+
+.module {
+    position: relative;
+  }
+
+  .module .collapse, .module .collapsing {
+    height: 7rem;
+  }
+
+  .module .collapse {
+    display: block;
+    overflow: hidden;
+  }
+
+  .module .collapse.show {
+    height: auto;
+  }
+
+
+  .read-more {
+    opacity: 1;
+    transition: all .3s linear;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+
+    background-image: linear-gradient(to bottom, transparent 60%, white);
+  }
+
+  .read-more:not(.collapsed) {
+    opacity: 0;
+
+  }
+
+  .module {
+    position: relative;
+  }
+
+  .module .collapse, .module .collapsing {
+    height: 7rem;
+  }
+
+  .module .collapse {
+    display: block; // By default the bootstrap collapse has a display: none
+    overflow: hidden;
+  }
+
+  .module .collapse.show {
+    height: auto;
+  }
+
+
+  .read-more {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+
+    // 60% is where it should start the transition from transparent to white, increase it if you want to show more of your text
+    background-image: linear-gradient(to bottom, transparent 60%, white);
+
+    // The opacity and transition is just to smooth out the effect 
+    opacity: 1;
+    transition: all .3s linear;
+  }
+
+  .read-more:not(.collapsed) {
+    opacity: 0;
+    // If you want to make the clickable area disapear once it is open, change the visibility to hidden:
+    /* visibility: hidden; */
+  }
+  
+
+
 
 @media (max-width: 768px) {
     .display-4 {
@@ -85,3 +187,4 @@ html, body {
         padding: 0.1rem !important; /* Override padding for small screens */
 }
 }
+

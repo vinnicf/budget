@@ -34,6 +34,8 @@ class Grupo(models.Model):
     name = models.CharField(max_length=10)
     classe = models.ForeignKey(Classe, related_name='grupos', on_delete=models.CASCADE)
     descricao = models.CharField(max_length=200, null=True)
+    detaileddescription = models.TextField(null=True, blank=True)
+
 
     def __str__(self):
         return self.name

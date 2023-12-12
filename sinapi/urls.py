@@ -4,7 +4,16 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
-from users.views import CustomEmailConfirmView
+from users.views import CustomEmailConfirmView, email_already_confirmed
+from django.contrib.sitemaps.views import sitemap
+from .sitemaps import ClasseSitemap, GrupoSitemap, InsumoSitemap, CompositionSitemap
+
+sitemaps = {
+    'classes': ClasseSitemap,
+    'grupos': GrupoSitemap,
+    'insumos': InsumoSitemap,
+    'compositions': CompositionSitemap
+}
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -17,6 +26,8 @@ urlpatterns = [
     path('usuario/', include ('users.urls')),
     path('politica-de-privacidade/', views.privacy_policy, name='privacy_policy'),
     path('termos-de-uso/', views.terms_and_conditions, name='terms_and_conditions'),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+
 ]
 
 if settings.DEBUG:

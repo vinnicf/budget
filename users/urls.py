@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import signup, PricingView, UserCreateView, LoginAPIView, payment_view, thank_you, CustomEmailConfirmView, thank_you_email
+from .views import signup, PricingView, UserCreateView, LoginAPIView, payment_view, thank_you, CustomEmailConfirmView, thank_you_email, email_already_confirmed
 
 app_name = 'users'
 urlpatterns = [
@@ -12,5 +12,4 @@ urlpatterns = [
     path('accounts/confirm-email/<key>/', CustomEmailConfirmView.as_view(), name="account_confirm_email"),
     path('obrigado-again/', thank_you_email, name='thank_you_email'),
     path('api/login/', LoginAPIView.as_view(), name='api-login'),
-
 ]

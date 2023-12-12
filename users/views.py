@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import Http404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
 from .forms import RegistrationForm, UserModalForm
@@ -77,23 +78,34 @@ def payment_view(request, user_id):
 
 class CustomEmailConfirmView(ConfirmEmailView):
     def get(self, *args, **kwargs):
-        response = super(CustomEmailConfirmView, self).get(*args, **kwargs)
+        try:
+            # Attempt to confirm the email
+            response = super(CustomEmailConfirmView, self).get(*args, **kwargs)
 
-        # Get the email confirmation object
-        self.object = confirmation = self.get_object()
-        # Confirm the email address
-        confirmation.confirm(self.request)
-        # Complete the signup process
-        complete_signup(self.request, confirmation.email_address.user, 
-                        app_settings.EMAIL_VERIFICATION, None)
+            # Get the email confirmation object
+            self.object = confirmation = self.get_object()
 
-        # Redirect to 'thank-you' page
+            # Confirm the email address if not already confirmed
+            confirmation.confirm(self.request)
+
+            # Complete the signup process
+            complete_signup(self.request, confirmation.email_address.user, 
+                            app_settings.EMAIL_VERIFICATION, None)
+
+        except Http404:
+            # Handle the case where the token is invalid, expired, or already confirmed
+            # Here, we'll just silently redirect to the 'thank you' page
+            pass
+
+        # Redirect to 'thank you' page for all cases
         return redirect('users:thank_you_email')
 
 
 def thank_you_email(request):
     return render(request, 'users/thank_you_email.html')
 
+def email_already_confirmed(request):
+    return render(request, 'account/thank_you_email.html')
 
 
 class PricingView(TemplateView):

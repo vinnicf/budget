@@ -3,6 +3,21 @@
 {% block content %}
 {% include "breadcrumb.html" %}
 <h2>{{grupo.descricao }} <span class="text-muted">({{ grupo.name }})</span></h2>
+
+{% if grupo.detaileddescription %}
+<div class="card">
+    <div class="card-body">
+         <div class="module">
+        <div class="collapse fade-out-effect" id="detailedDescriptionCollapse">
+            <p class="card-text">{{ grupo.detaileddescription|linebreaks }}</p></div>
+        <button class="btn " type="button" data-bs-toggle="collapse" data-bs-target="#detailedDescriptionCollapse" aria-expanded="false" aria-controls="detailedDescriptionCollapse">
+            Ler Mais ⬇️
+        </button>
+    </div>
+</div>
+{% endif %}
+
+
 <h3>Composições:</h3>
 
 <table class="table table-striped">
@@ -23,6 +38,21 @@
         {% endfor %}
     </tbody>
 </table>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var collapseElement = document.getElementById('detailedDescriptionCollapse');
+        var button = document.querySelector('[data-bs-target="#detailedDescriptionCollapse"]');
+        
+        button.addEventListener('click', function() {
+            collapseElement.classList.toggle('expanded');
+            // Hide the button after it's clicked
+            this.style.display = 'none';
+        });
+    });
+</script>
+
 
 {% endblock %}
 
