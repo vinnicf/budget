@@ -301,7 +301,13 @@ html, body {
     margin-right: 0; /* Reset margins for larger screens */
   }
 }
-
+ .display-5 {
+  padding-top: 20px;
+ }
+ .btn-primary {
+  background-color: #0099ff;
+  font-size: 1.25rem;
+ }
   
 .screenshot-title {
   font-family: "General Sans", sans-serif;
@@ -313,6 +319,9 @@ html, body {
   color: var(--token-f27137b4-9768-4a66-a2ef-c8166a01c1ef, rgb(12, 17, 29));
 }
 
+.footer a {
+color: #262627;
+}
 
 
 @media (max-width: 768px) {
@@ -326,12 +335,17 @@ html, body {
   #root {
     padding: 0;
   }
+
+  #main-container {
+    padding: 0;
+  }
     .display-4 {
         font-size: 1.5rem; /* Adjust the size as needed */
     }
 
     .reduce-padding-sm {
         padding: 0.1rem !important; /* Override padding for small screens */
+        margin-bottom: 25px;
 }
 }
 

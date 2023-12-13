@@ -23,7 +23,7 @@
 
 <div class="container col-xxl-8 px-4 py-5 bordered-container" bis_skin_checked="1">
     <div class="row flex-lg-row-reverse align-items-center g-5" bis_skin_checked="1">
-        <div class="col-sm-8 col-lg-6" bis_skin_checked="1">
+        <div class="col-lg-6" bis_skin_checked="1">
             <img src="{% static 'images/screenshot1.png' %}" alt="App Screenshot" class="app-screenshot">
         </div>
         <div class="col-lg-6" bis_skin_checked="1">
@@ -65,7 +65,7 @@
                     <h3>Composições</h3>
                 </div>
                 <div class="card-body">
-                    <p>Explore as diferentes composições da base de dados SINAPI.</p>
+                    <p>Explore as diferentes composições da base de dados SINAPI, com table de insumos, coefientes e preços.</p>
                     <a href="{% url 'compositions:classes_list' %}" class="btn btn-primary">Ver Composições</a>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                     <h3>Insumos</h3>
                 </div>
                 <div class="card-body">
-                    <p>Conheça diferentes insumos da base de dados Sinapi.</p>
+                    <p>Explore os diferentes insumos da base de dados Sinapi, com preços médios atualizados</p>
                     <a href="{% url 'compositions:insumo_list' %}" class="btn btn-primary">Ver Insumos</a>
                 </div>
             </div>
