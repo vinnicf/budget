@@ -50,7 +50,8 @@ def signup(request):
 def thank_you(request):
     return render(request, 'users/thankyou.html')
 
-
+def password_reset_confirm(request, uid, token):
+    return render(request, 'users/reset_password.html', {'uid': uid, 'token': token})
 
 def payment_view(request, user_id):
     # Verify the user_id and fetch necessary details based on your application logic
