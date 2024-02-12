@@ -23,4 +23,4 @@ class OrcamentoSerializer(serializers.ModelSerializer):
             # Detail view - include all items
             return OrcamentoItemSerializer(obj.items.all(), many=True).data
         # List view - do not include items or include limited data
-        return None  # Or return limited data
+        return None 

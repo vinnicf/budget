@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -87,25 +88,30 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'sinapi.wsgi.application'
 
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51O6c5RIEZ29y0tWFmem18vJ3uCJtottgwmlTkakLNlXCrDi1yIAkPvKBCfpc4wnsgHi6UqKuqe378sOFMFD9nZma003sYUfNB2'
-STRIPE_SECRET_KEY = 'sk_test_51O6c5RIEZ29y0tWFkfEdx8XPBacE5bGqyLZTMVruj57bL4EnaD9OwqHRJ2sGIjXTNtL4VCgj22jiwNX4wV3m2Fr600LnmJ85Dv'
+load_dotenv()
+
+
+
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+
 
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_REQUIRED = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = 'email-smtp.us-east-2.amazonaws.com'  
+EMAIL_HOST = 'email-smtp.us-east-2.amazonaws.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'AKIAZ6I3GVD7CCAVOVN5'
-EMAIL_HOST_PASSWORD = 'BHbBx9yvp1B4rBR+MIo8WIp+Jd7Fp6niA9NVH9Ziodqu'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = 'contato@orcamentor.com'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ], 
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
@@ -114,7 +120,6 @@ REST_FRAMEWORK = {
 CORS_ALLOW_ALL_ORIGINS = True
 
 SITE_ID = 1
-
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
